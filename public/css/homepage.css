@@ -1,0 +1,63 @@
+.custom-navbar {
+    background-color: #4477CE;
+}
+.navbar-item{
+    color: white;
+    font-family: 'Exo', sans-serif;
+
+}
+
+
+/* Customize image size */
+.img-fluid {
+    max-width: 15rem; /* Adjust the width as needed */
+    height: auto;
+}
+
+/* Customize button color */
+.btn-custom {
+    background-color: #002D79; /* Change to your desired color */
+    border-color: #002D79; /* Same color as background */
+    color: #fff; /* Text color */
+    width: 70%;
+    font-family: 'Exo', sans-serif;
+    
+}
+
+.footer-section{
+    background-color: #6A44D7;
+    color: white; /* Change text color to white for better contrast */
+    padding: 50px 0; /* Add padding for space around the content */
+}
+
+.button-group {
+    margin-bottom: 30px;
+}
+
+.contact-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: 'Exo', sans-serif;
+    font-size: 20px;
+}
+
+.contact-icons {
+    font-size: 24px; /* Change the size as needed */
+    display: flex; /* Use flexbox to arrange icons horizontally */
+    justify-content: center;
+    gap: 25px; /* Adjust the gap size as needed */
+    margin-bottom: 30px; /* Add some space at the bottom */
+}
+.footer-logo {
+    width: 20rem; /* Adjust the width as needed */
+    height: auto;
+    margin-top: 0;
+    margin-right: 20px; /* Add spacing between logo and other content */
+}
+
+#copyright{
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 0;
+}
+
