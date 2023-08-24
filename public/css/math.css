@@ -1,0 +1,117 @@
+.btn-custom {
+    background-color: #002D79;
+    border-color: #002D79;
+    color: #fff;
+    font-family: 'Exo', sans-serif;
+    font-weight: 900;
+    border-radius: 0.8rem;
+
+}
+
+.btn-custom:hover {
+    background: #3cb0fd;
+    text-decoration: none;
+}
+
+.up-down{
+    color: #002D79;
+}
+.up-down:hover {
+    color: #3cb0fd;
+}
+
+.component {
+    border: 1px solid #000000;
+    border-radius: 4px;
+}
+
+.contact-icons {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.contact-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+    font-family: 'Exo', sans-serif;
+    font-size: 20px;
+}
+
+.custom-navbar {
+    background-color: #4477CE;
+}
+
+.custom-row {
+    width: 88%;
+    margin: auto;
+}
+
+.footer-logo {
+    width: 20rem;
+    height: auto;
+    margin-top: 0;
+    margin-right: 20px;
+}
+
+.footer-section {
+    background-color: #6A44D7;
+    color: white;
+    padding: 50px 0;
+}
+
+#horizontal-rule {
+    color: #3069cc;
+}
+
+.left-column {
+    display: flex;
+    margin: auto;
+    justify-content: left;
+    align-items: center;
+}
+
+#math{
+    margin-bottom: 5%;
+}
+.navbar-item {
+    color: white;
+    font-family: 'Exo', sans-serif;
+}
+
+#point{
+    font-size: 1rem;
+    font-weight: 600;
+}
+#problem-status {
+    font-family: 'Exo', sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#problem-title{
+    font-size: 1.5rem;
+    font-weight:900;
+}
+
+.spacer {
+    height: 10px;
+
+    background-color: transparent;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+}
+.table-cell-with-input input {
+    width: 200px; /* Set the width as per your preference */
+}
+
