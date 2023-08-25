@@ -234,7 +234,7 @@ h3 {
 }
 
 .footer-section {
-    background-color: #6A44D7;
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
     color: white;
     padding: 50px 0;
 }
@@ -254,9 +254,15 @@ h3 {
 .contact-icons {
     font-size: 24px;
     display: flex;
+    color: black;
     justify-content: center;
     gap: 25px;
     margin-bottom: 30px;
+}
+
+.contact-icons i:hover {
+    color: white;
+    cursor: pointer;
 }
 
 .footer-logo {
@@ -264,6 +270,8 @@ h3 {
     height: auto;
     margin-top: 0;
     margin-right: 20px;
+    display: flex;
+    align-items: center;
 }
 
 #copyright {
