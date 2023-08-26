@@ -54,12 +54,17 @@
                     <input type="checkbox" name="item" checked />
                     <span class="text-checkbox">Remember Me</span>
                 </label>
-                <button>Sign Up</button>
+                
+                <form action="/signup" method="post">
+                    <button type="submit" name="signupButton">Sign Up</button>
+                </form>
+            
+                
             </div>
 
             <br>
             <span>
-                <a href="#"><i class="fa fa-google" aria-hidden="true"></i>  Login with Google</a>
+                <a href="/auth/google"><i class="fa fa-google" aria-hidden="true"></i>  Login with Google</a>
             </span>
             <span>
                 <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>  Login with Facebook</a>
