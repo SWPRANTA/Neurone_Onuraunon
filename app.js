@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendSignInLinkToEmail  } = require("firebase/auth");
 
 
 app.set("view engine", "ejs");
@@ -53,6 +53,30 @@ app.get("/signup", function (req, res) {
     res.render("signup", { errorMessage: "" });
 });
 
+// app.post("/signup", (req, res) => {
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const confirmPassword = req.body.confirmPassword;
+
+//     if (password !== confirmPassword) {
+//         return res.render("signup", { errorMessage: "Passwords do not match." });
+//     }
+
+//     createUserWithEmailAndPassword(auth, email, password)
+//         .then((userCredential) => {
+//             const user = userCredential.user;
+//             console.log("User registered:", user.email);
+//             res.redirect("/home");
+//         })
+//         .catch((error) => {
+//             const errorCode = error.code;
+//             const errorMessage = error.message;
+//             console.error("Registration error:", errorCode, errorMessage);
+//             res.render("signup", { errorMessage: "An error occurred during registration." });
+//         });
+// });
+
+// Function to send a verification email
 app.post("/signup", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -66,7 +90,11 @@ app.post("/signup", (req, res) => {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log("User registered:", user.email);
-            res.redirect("/home");
+
+            // Send verification email
+            sendVerificationEmail(user.email);
+
+            res.redirect("/verify-email"); // Redirect to the verification page
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -75,6 +103,24 @@ app.post("/signup", (req, res) => {
             res.render("signup", { errorMessage: "An error occurred during registration." });
         });
 });
+
+// Function to send a verification email
+function sendVerificationEmail(email) {
+    const actionCodeSettings = {
+        url: `http://localhost:3000/verify?email=${email}`, // Replace with your actual verification URL
+        handleCodeInApp: true
+    };
+
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+        .then(() => {
+            console.log("Verification email sent");
+        })
+        .catch((error) => {
+            console.error("Error sending verification email:", error);
+        });
+}
+
+
 
 
 app.get("/forgot-password", function (req, res) {
@@ -95,6 +141,21 @@ app.get("/problems", function (req, res) {
 app.get("/math", function (req, res) {
     res.render("math");
 });
+
+app.get("/verify-email", (req, res) => {
+    res.render("verify-email");
+});
+
+app.get("/verify", (req, res) => {
+    // Extract the email from the query parameter
+    const email = req.query.email;
+
+    // Redirect the user to the home page after verification
+    res.redirect("/home");
+});
+
+
+
 
 app.listen(port, function () {
     console.log(`Server is running on port ${port}`);

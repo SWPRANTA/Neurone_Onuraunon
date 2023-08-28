@@ -1,0 +1,32 @@
+body {
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Exo", sans-serif;
+    color: #ffffff;
+    align-items: center;
+}
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the "Open" links */
+.btn {
+    margin-right: 10px; /* Add spacing between links if needed */
+}
+#body-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+a {
+    display: inline-block;
+    margin: 10px;
+}
+.img-responsive {
+    margin: 0 auto;
+    display: block;
+}
