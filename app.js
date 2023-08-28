@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword } = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } = require("firebase/auth");
 
 
 app.set("view engine", "ejs");
@@ -22,7 +22,6 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 
-//Routes for different pages
 app.get("/landing", function (req, res) {
     res.render("landing");
 });
@@ -31,40 +30,52 @@ app.get("/login", function (req, res) {
     res.render("login", { errorMessage: null });
 });
 
-
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User logged in:", user.email);
+            res.redirect("/home");
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Login error:", errorCode, errorMessage);
+            res.render("login", { errorMessage: "Invalid email or password." });
+        });
+});
+
+
+app.get("/signup", function (req, res) {
+    res.render("signup", { errorMessage: "" });
+});
+
+app.post("/signup", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (password !== confirmPassword) {
+        return res.render("signup", { errorMessage: "Passwords do not match." });
+    }
 
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
             console.log("User registered:", user.email);
-            res.redirect("/home"); // Redirect after successful registration
+            res.redirect("/home");
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error("Registration error:", errorCode, errorMessage);
-            // Handle registration error
-            res.redirect("/login"); // Redirect with error message, if needed
+            res.render("signup", { errorMessage: "An error occurred during registration." });
         });
-
-    // try {
-    //     // Create a new user with email and password
-    //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-    //     // User creation successful, redirect to home page
-    //     res.redirect("/home");
-    // } catch (error) {
-    //     // Handle error and render the signup page with an error message
-    //     res.render("login", { errorMessage: error.message });
-    // }
 });
 
-app.get("/signup", function (req, res) {
-    res.render("signup");
-});
 
 app.get("/forgot-password", function (req, res) {
     res.render("forgot-password");

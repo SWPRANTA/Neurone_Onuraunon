@@ -1,7 +1,8 @@
 .custom-navbar {
     background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
 }
-.navbar-item{
+
+.navbar-item {
     color: white;
     font-family: 'Exo', sans-serif;
 
@@ -10,31 +11,42 @@
 
 /* Customize image size */
 .img-fluid {
-    max-width: 15rem; /* Adjust the width as needed */
+    max-width: 15rem;
+    /* Adjust the width as needed */
     height: auto;
 }
 
 /* Customize button color */
 .btn-custom {
-    background-color: #002D79;
-    border-color: #002D79;
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
     color: #fff;
     width: 70%;
     font-family: 'Exo', sans-serif;
 }
 
 .btn-custom:hover {
-    background-color: #0046B8;
-    border-color: #0046B8;
-    color: #fff;
-}
-
-
-.footer-section{
     background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
-    color: white; /* Change text color to white for better contrast */
-    padding: 50px 0; /* Add padding for space around the content */
+    color: #fff;
+    transform: translateY(-2px) translateX(2px);
 }
+
+
+.footer-section {
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: white;
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Vertically center align */
+}
+
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 
 .button-group {
     margin-bottom: 30px;
@@ -49,26 +61,28 @@
 }
 
 .contact-icons {
-    font-size: 24px; /* Change the size as needed */
+    font-size: 24px;
+    display: flex;
     color: black;
-    display: flex; /* Use flexbox to arrange icons horizontally */
-    justify-content: center;
-    gap: 25px; /* Adjust the gap size as needed */
-    margin-bottom: 30px; /* Add some space at the bottom */
+    gap: 25px;
+    margin-bottom: 30px;
 }
+
 .contact-icons i:hover {
     color: white;
     cursor: pointer;
 }
 
+
 .footer-logo {
-    width: 20rem; /* Adjust the width as needed */
+    width: 20rem;
     height: auto;
-    margin-top: auto;
-    margin-right: 20px; /* Add spacing between logo and other content */
+    display: flex;
+    justify-content: center; /* Add this line to horizontally center the logo */
 }
 
-#copyright{
+
+#copyright {
     font-family: 'Poppins', sans-serif;
     margin-bottom: 0;
 }
@@ -76,173 +90,143 @@
 
 /* Reference */
 
-h1 
-{  
-    font-size: 2.5rem;  
-    line-height: 2;  
+h1 {
+    font-size: 2.5rem;
+    line-height: 2;
     font-weight: bold;
 }
 
-h2
-{  
-    font-size: 3rem;  
-    line-height: 1.5;  
+h2 {
+    font-size: 3rem;
+    line-height: 1.5;
     font-weight: bold;
 }
 
-h3
-{
+h3 {
     font-weight: bold;
 }
 
-.navbar-brand
-{
+.navbar-brand {
     font-size: 2.5rem;
     font-weight: bold;
 }
 
-.nav-item
-{
+.nav-item {
     padding: 0 20px;
 }
 
-.nav-link
-{
+.nav-link {
     font-size: 1.2rem;
 }
 
-.download-button
-{
+.download-button {
     margin: 50px 10px 50px;
 }
 
-.title-image
-{
+.title-image {
     width: 75%;
     position: relative;
     margin-left: 250px;
     margin-bottom: 50px;
 }
 
-.feature-box
-{
+.feature-box {
     text-align: center;
     padding: 2%;
 }
 
-.icon
-{
+.icon {
     color: #82AAE3;
     padding-bottom: 10px;
 }
 
-.icon:hover
-{
+.icon:hover {
     color: #146C94;
 }
 
-.carousel-item
-{
+.carousel-item {
     padding: 5% 15%;
 }
 
-.testimonial-image
-{
+.testimonial-image {
     border-radius: 10%;
     width: 25%;
 }
 
-.testimonial-image:hover 
-{
+.testimonial-image:hover {
     opacity: .8;
 }
 
-.press-logo
-{
+.press-logo {
     width: 10%;
     margin: 0px 20px 20px 10px;
 }
 
-.pricing-btn
-{
+.pricing-btn {
     padding: 2.5%;
 }
 
-.signup-btn:hover
-{
+.signup-btn:hover {
     background-color: #82AAE3;
 }
 
-.card-header
-{
+.card-header {
     background-color: #82AAE3;
     color: white;
 }
 
-.cta-heading
-{
+.cta-heading {
     font-size: 4rem;
     padding-top: 5%;
 }
 
-.social-icon
-{
+.social-icon {
     margin: 0 1%;
 }
 
-#title
-{
+#title {
     background-color: #82AAE3;
     color: white;
 }
 
-#features
-{
+#features {
     padding: 10% 15%;
 }
 
-#testimonials
-{
+#testimonials {
     background-color: #82AAE3;
     text-align: center;
     color: white;
 }
 
-#press
-{
-   background-color: #82AAE3;
-   padding-bottom: 2%; 
-   text-align: center;
+#press {
+    background-color: #82AAE3;
+    padding-bottom: 2%;
+    text-align: center;
 }
 
-#pricing
-{
+#pricing {
     padding: 100px;
     text-align: center;
 }
 
-#cta
-{
+#cta {
     background-color: #82AAE3;
     color: white;
     text-align: center;
 }
 
-#copyright
-{
+#copyright {
     margin: 0;
 }
 
-@media (max-width: 1024px) 
-{
-    .title-image
-    {
+@media (max-width: 1024px) {
+    .title-image {
         margin: auto;
         position: static;
     }
-    .title-image-query
-    {
+
+    .title-image-query {
         text-align: center;
     }
 }
-

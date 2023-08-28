@@ -37,34 +37,38 @@ h3 {
 }
 
 .custom-navbar {
-    background-color: #ffffff;
-    position: fixed;
-    z-index: 1;
-    width: 100%;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
-    top: 0px;
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    
 }
 
 .nav-item {
     font-family: 'Exo', sans-serif;
-    padding: 0 5px;
+    padding: 0 20px;
+}
+
+.navbar-item{
+    color: white;
+    font-family: 'Exo', sans-serif;
+
+}
+
+.navbar-brand
+{
+    font-size: 2.5rem;
+    font-weight: bold;
 }
 
 .nav-link {
-    color: black;
+    color: #ffffff8c;
     font-size: 1.2rem;
 }
 
 .nav-link:hover {
-    color: darkgray;
+    color: #ffffffbf;
 }
 
 .btn {
-    background-color: #002D79;
-    border-color: #002D79;
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
     color: #fff;
     font-family: 'Exo', sans-serif;
     font-weight: 900;
@@ -73,13 +77,16 @@ h3 {
 }
 
 .btn:hover {
-    background: #3cb0fd;
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: #fff;
     text-decoration: none;
+    transform: translateY(-2px) translateX(2px);
 }
 
 .title-section{
-    margin-top: 60px;
+    margin-top: 75px;
 }
+
 .btn-title {
     -webkit-border-radius: 17;
     -moz-border-radius: 17;
@@ -87,8 +94,7 @@ h3 {
     font-family: 'Exo', sans-serif;
     color: #ffffff;
     font-size: 20px;
-    background: #002D79;
-    border-color: #002D79;
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
     padding: 10px 70px 10px 70px;
     text-decoration: none;
 }

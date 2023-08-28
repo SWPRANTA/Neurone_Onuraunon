@@ -30,50 +30,50 @@
             </div>
         </div>
 
+        <form action="/signup" method="post">
+            <div class="right">
+                <h5 class="signup-header">Signup</h5>
+                <p>Already have an account? <a href="http://localhost:3000/login">Log In!</a></p>
+                <div class="inputs">
+                    <input type="text" placeholder="sample@gmail.com">
+                    <br>
+                    <input type="email" name="email" placeholder="Email">
+                    <br>
+                    <input type="password" name="password" placeholder="Password">
+                    <br>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password">
+                    <br>
+                </div>
 
-        <div class="right">
-            <h5 class="signup-header">Signup</h5>
-            <p>Already have an account? <a href="http://localhost:3000/login">Log In!</a></p>
-            <div class="inputs">
-                <input type="text" placeholder="Username">
-                <br>
-                <input type="email" placeholder="Email">
-                <br>
-                <input type="password" placeholder="Password">
-                <br>
-                <input type="password" placeholder="Confirm Password">
-                <br>
-                
-            </div>
+                <br><br>
 
-            <br><br>
-
-            <div class="remember-me--forget-password">
-                <!-- Angular -->
-                <label>
-                    <input type="checkbox" name="item" checked />
-                    <span class="text-checkbox">Remember Me</span>
-                </label>
-                
-                <form action="/signup" method="post">
+                <div class="remember-me--forget-password">
+                    <label>
+                        <input type="checkbox" id="rememberMe" name="item" checked />
+                        <span class="text-checkbox">Remember Me</span>
+                    </label>
                     <button type="submit" name="signupButton">Sign Up</button>
-                </form>
-            
-                
-            </div>
 
-            <br>
-            <span>
-                <a href="/auth/google"><i class="fa fa-google" aria-hidden="true"></i>  Login with Google</a>
-            </span>
-            <span>
-                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>  Login with Facebook</a>
-            </span>
-        </div>
+                </div>
+                <!-- <p class="error-message" style="color: red;">
+                    <%= errorMessage %>
+                </p> -->
+
+        </form>
+
 
     </div>
-    <!-- partial -->
 
+    <br>
+    <!-- <span>
+        <a href="/auth/google"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
+    </span>
+    <span>
+        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a>
+    </span> -->
+    </div>
+
+    </div>
 </body>
 
 </html>

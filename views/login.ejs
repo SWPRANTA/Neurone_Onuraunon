@@ -35,6 +35,7 @@
             <h5 class="login-header">Login</h5>
             <p>Don't have an account? <a href="http://localhost:3000/signup">Sign Up</a>- it takes less than a minute!
             </p>
+
             <form action="/login" class="" method="post">
                 <div class="inputs">
                     <input type="email" id="email" name="email" placeholder="sample@gmail.com" required>
@@ -47,10 +48,10 @@
                 <div class="remember-me--forget-password">
                     <!-- Angular -->
                     <label>
-                        <input type="checkbox" name="item" checked />
+                        <input type="checkbox" id="rememberMe" name="item" checked />
                         <span class="text-checkbox">Remember Me</span>
                     </label>
-                    <p>Forgot Password?</p>
+                    <a href="http://localhost:3000/forgot-password">Forgot Password?</a>
                 </div>
 
                 <br>
@@ -63,4 +64,5 @@
 
     </div>
 </body>
+
 </html>
