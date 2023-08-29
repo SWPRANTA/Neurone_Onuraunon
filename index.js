@@ -6,8 +6,8 @@ const path = require('path');
 
 const app = express();
 
-const GOOGLE_CLIENT_ID = '1089281836108-ndqfn714fjs9mscj3q3svjcjavhn2b0m.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
+const GOOGLE_CLIENT_ID = '';
+const GOOGLE_CLIENT_SECRET = '';
 
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(express.urlencoded({ extended: true }));
