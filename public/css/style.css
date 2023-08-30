@@ -253,3 +253,24 @@ label span.text-checkbox {
 label input[type="checkbox"] {
     display: none;
 }
+
+
+/* Style for the custom input field */
+.custom-input {
+    position: relative;
+}
+
+/* Style for the password input */
+.custom-input input[type="password"] {
+    padding-right: 5%;
+}
+
+/* Style for the eye button */
+.toggle-password {
+    position: absolute;
+    right: 5%;
+    top: 50px;
+    transform: translateY(-60%);
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}

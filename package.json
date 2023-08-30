@@ -16,7 +16,8 @@
     "firebase": "^10.3.0",
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "xlsx": "^0.18.5"
   },
   "description": ""
 }

@@ -1,92 +1,68 @@
-const express = require("express");
-const passport = require('passport');
+const mongoose = require("mongoose");
+const xlsx = require('xlsx');
 
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const path = require('path');
+mongoose
+.connect("mongodb://127.0.0.1:27017/neurone_onuraunon", {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => {
+    console.log("mongoose started");
 
-const app = express();
+    // Drop the entire database
+    return mongoose.connection.db.dropDatabase();
+})
+.then(() => {
+    console.log("Database dropped");
 
-const GOOGLE_CLIENT_ID = '';
-const GOOGLE_CLIENT_SECRET = '';
+    const problemSchema = new mongoose.Schema({
+        title: {
+            type: String,
+            required: true
+        },
+        statement: {
+            type: String,
+            required: true
+        },
+        solution: {
+            type: String,
+            required: true
+        },
+        points :{
+            type: Number,
+            required: true
+        }
+    });
 
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(express.urlencoded({ extended: true }));
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
+    const Problem = mongoose.model("Problem", problemSchema);
+    const workbook = xlsx.readFile('Problems Details.xlsx');
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-// Configure Google OAuth
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/home",
-}, function (accessToken, refreshToken, profile, done) {
-    // Perform user registration or other actions here
-    // For now, returning the profile as the user
-    console.log("Authenticated user data:", profile);
-    return done(null, profile);
-}));
+    const desiredColumns = ['Title', 'Statement', 'Solution', 'Points'];
+    const excelData = xlsx.utils.sheet_to_json(worksheet, {header: desiredColumns, range: 1});
 
-// Serialize and deserialize user
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
+    const columnData = {
+        'Title': 'title',
+        'Statement': 'statement',
+        'Solution': 'solution',
+        'Points': 'points'
+    };
 
-// Google authentication route
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['email', 'profile']
-}));
+    const mappedData = excelData.map((row) => {
+        const mappedRow = {};
+        for (const column of desiredColumns) {
+            const field = columnData[column];
+            mappedRow[field] = row[column];
+        }
+        return mappedRow;
+    });
 
-// Google callback route
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    function (req, res) {
-        req.session.userProfilePicture = req.user.photos[0].value;
-        // Successful authentication, redirect to home page or user dashboard
-        res.redirect('/home');
-    }
-);
-
-
-
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
-
-//Routes for different pages
-app.get("/landing", function (req, res) {
-    res.render("landing");
-});
-
-app.get("/login", function (req, res) {
-    res.render("login");
-});
-
-app.get("/signup", function (req, res) {
-    res.render("signup");
-});
-
-app.get("/forgot-password", function (req, res) {
-    res.render("forgot-password");
-});
-
-app.get("/home", function (req, res) {
-    res.render("home", { userProfilePicture: req.session.userProfilePicture });
-});
-
-app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/landing.html");
-});
-
-app.get("/problems", function (req, res) {
-    res.render("problems");
-});
-app.get("/math", function (req, res) {
-    res.render("math");
-});
-
-app.listen(3000, function () {
-    console.log("Server is running on port 3000!");
+    // Insert data into the new database
+    return Problem.insertMany(mappedData);
+})
+.then((docs) => {
+    console.log('Documents inserted successfully: ', docs);
+})
+.catch((err) => {
+    console.log('Error: ', err);
+})
+.finally(() => {
+    mongoose.connection.close();
 });
