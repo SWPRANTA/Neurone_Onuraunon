@@ -1,69 +1,94 @@
-<%- include("header") -%>
-    <section class="body-section" id="body-section">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="http://localhost:3000/problems">
-                        <img src="/images/Problem Solving Illustration - 3.png" alt="Problem Solving" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Problems</button>
-                    </a>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
 
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Contest Illustration - 2.png" alt="Monthly Contest" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Monthly Contest</button>
-                    </a>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - A Comprehensive Platform for Olympiad Aspirants</title>
+    <%- include("header") -%>
 
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html"><img src="/images/Fest.png" alt="Fest" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Fest Update</button></a>
-                </div>
-
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Leaderboard.png" alt="Leaderboard" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Leaderboard</button>
-                    </a>
-                </div>
-
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Contest Illustration - 1.jpg" alt="Contest" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Contest</button>
-                    </a>
-                </div>
-
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Event.png" alt="Event" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Event</button>
-                    </a>
-                </div>
-
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Blog.png" alt="Blog" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Blog/Tutorials</button>
-                    </a>
-                </div>
-
-                <div class="col-md-3 mb-4 text-center">
-                    <a href="destination1.html">
-                        <img src="/images/Community.png" alt="Community" class="img-fluid img-responsive">
-                        <button class="btn btn-custom btn-block mt-2">Community</button>
-                    </a>
+        <li class="nav-item">
+            <div class="dropdown mb-2 nav-link">
+                <button class="btn dropdown-toggle" type="button" id="profileButton" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Profile
+                </button>
+                <div class="dropdown-menu" aria-labelledby="profileButton">
+                    <a class="dropdown-item" href="#">Dashboard</a>
+                    <a class="dropdown-item" href="#">Notification</a>
+                    <a class="dropdown-item" href="#">Logout</a>
                 </div>
             </div>
+        </li>
+        </ul>
         </div>
-    </section>
+        </div>
+        </nav>
+        </section>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
-        crossorigin="anonymous"></script>
-<%- include("footer") -%>
+        <section class="body-section" id="body-section">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="http://localhost:3000/problems">
+                            <img src="/images/Problem Solving Illustration - 3.png" alt="Problem Solving"
+                                class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Problems</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Contest Illustration - 2.png" alt="Monthly Contest"
+                                class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Monthly Contest</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html"><img src="/images/Fest.png" alt="Fest"
+                                class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Fest Update</button></a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Leaderboard.png" alt="Leaderboard" class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Leaderboard</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Contest Illustration - 1.jpg" alt="Contest"
+                                class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Contest</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Event.png" alt="Event" class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Event</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Blog.png" alt="Blog" class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Blog/Tutorials</button>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 mb-4 text-center">
+                        <a href="destination1.html">
+                            <img src="/images/Community.png" alt="Community" class="img-fluid img-responsive">
+                            <button class="btn btn-custom btn-block mt-2">Community</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <%- include("footer") -%>

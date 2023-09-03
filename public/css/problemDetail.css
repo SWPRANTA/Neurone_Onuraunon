@@ -1,0 +1,68 @@
+
+
+.up-down{
+    color: #002D79;
+}
+.up-down:hover {
+    color: #3cb0fd;
+}
+#profile_picture {
+    width: 50px;
+    height: 50px;
+}
+.component {
+    border: 1px solid #000000;
+    border-radius: 4px;
+}
+
+.custom-row {
+    width: 88%;
+    margin: auto;
+}
+
+
+
+#horizontal-rule {
+    color: #3069cc;
+}
+
+.left-column {
+    display: flex;
+    margin: auto;
+    justify-content: left;
+    align-items: center;
+}
+
+#problemDetail{
+    margin: 5% 0% 15%;
+}
+
+#point{
+    font-size: 1rem;
+    font-weight: 600;
+}
+#problem-status {
+    font-family: 'Exo', sans-serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#problem-title{
+    font-size: 1.5rem;
+    font-weight:900;
+}
+
+.spacer {
+    height: 10px;
+
+    background-color: transparent;
+}
+
+
+.table-cell-with-input input {
+    width: 200px; /* Set the width as per your preference */
+}
+

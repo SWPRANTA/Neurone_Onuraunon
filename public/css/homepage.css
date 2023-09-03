@@ -78,7 +78,8 @@
     width: 20rem;
     height: auto;
     display: flex;
-    justify-content: center; /* Add this line to horizontally center the logo */
+    justify-content: center;
+    /* Add this line to horizontally center the logo */
 }
 
 
@@ -143,6 +144,10 @@ h3 {
     padding: 5% 15%;
 }
 
+#profile_picture {
+    width: 50px;
+    height: 50px;
+}
 
 .press-logo {
     width: 10%;
@@ -217,3 +222,4 @@ h3 {
         text-align: center;
     }
 }
+

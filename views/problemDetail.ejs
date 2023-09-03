@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon | <%= problem.title %>
+    </title>
+    <%- include("header") -%>
+    <a class="navbar-brand" id="profile_picture" href="#">
+        <img src="" alt="User Logo">
+    </a>
+</div>
+</nav>
+</section>
+
+
+    <!-- math problem section-->
+    <section id="problemDetail">
+        <div class="row custom-row">
+            <div class="col-md-8 left-column  component mb-4">
+                <div class="container mt-2">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="problem-title"><%= problem.title %></div>
+                                    <div id="point">Points: <%= problem.points %></div>
+                                    <hr id="horizontal-rule">
+                                    <div><%= problem.statement %></div>
+                                </td>
+                            </tr>
+                            <tr class="spacer"></tr>
+                            <tr>
+                                <td class="d-flex justify-content-between">
+                                    <span class="table-cell-with-input d-flex justify-content-start">
+                                        <button class="btn me-2"><i class="fa fa-lg fa-circle-up up-down"></i>
+                                            Upvote</button>
+                                        <button class="btn me-2"><i class="fa fa-lg fa-circle-down up-down"></i>
+                                            Downvote</button>
+                                    </span>
+                                    <span class="table-cell-with-input d-flex justify-content-end">
+                                        <input type="text" class="form-control me-2" placeholder="Your Answer">
+                                        <button class="btn btn-custom">SUBMIT</button>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-4 ms-auto right-column">
+                <div class="p-3 mb-3 component">
+                    <div class="container mt-2">
+                        <div>
+                            <h1 id="problem-status">Status</h1>
+                        </div>
+                        <hr id="horizontal-rule">
+                    </div>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td class="d-flex justify-content-between">
+                                    <span class="table-cell-with-input d-flex justify-content-start">
+                                        Tried
+                                    </span>
+                                    <span class="table-cell-with-input d-flex justify-content-end">
+                                        1000
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="spacer"></tr>
+                            <tr>
+                                <td class="d-flex justify-content-between">
+                                    <span class="table-cell-with-input d-flex justify-content-start">
+                                        Solved
+                                    </span>
+                                    <span class="table-cell-with-input d-flex justify-content-end">
+                                        1000
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="spacer"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <%- include("footer") -%>
