@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendSignInLinkToEmail } = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
 
 
 app.set("view engine", "ejs");
@@ -21,13 +21,7 @@ mongoose
     });
 
 const firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
-    measurementId: ""
+    
 };
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
@@ -51,6 +45,26 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+const blogSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    date: { type: Date, required: true },
+    imageUrl: { type: String, required: true }
+});
+
+const Blog = mongoose.model("Blog", blogSchema);
+
+function requireAuth(req, res, next) {
+    const auth = getAuth();
+
+    if (auth.currentUser) {
+        next();
+    } else {
+        res.redirect("/login");
+    }
+}
+
+app.use(["/profile", "/dashboard", "/home", "/problems", "/problemDetail", "/blog", "/monthly-contest", "/leaderboard", "/contest", "/event", "/community"], requireAuth);
 
 
 app.get("/landing", function (req, res) {
@@ -69,8 +83,7 @@ app.post("/login", (req, res) => {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log("User logged in:", user.email);
-            link = `https://api.dicebear.com/7.x/bottts/svg?seed=${email}`;
-            res.redirect("/home", {imageLink: link});
+            res.redirect("/home");
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -80,6 +93,17 @@ app.post("/login", (req, res) => {
         });
 });
 
+app.get("/logout", function (req, res) {
+    signOut(auth)
+        .then(() => {
+            console.log("User logged out successfully.");
+            res.redirect("/login");
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+            res.redirect("/home"); // Redirect to home page even on logout error
+        });
+});
 
 app.get("/signup", function (req, res) {
     res.render("signup", { errorMessage: "" });
@@ -89,8 +113,7 @@ app.post("/signup", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-    const name = req.body.name; // Add this line to get the user's name
-
+    const name = req.body.name;
     if (password !== confirmPassword) {
         return res.render("signup", { errorMessage: "Passwords do not match." });
     }
@@ -99,12 +122,11 @@ app.post("/signup", (req, res) => {
         .then((userCredential) => {
             const user = userCredential.user;
 
-            // Save user information to MongoDB
             const newUser = new User({
                 name: name,
                 email: email,
                 password: password,
-                imageLink:`https://api.dicebear.com/7.x/bottts/svg?seed=${email}`
+                imageLink: `https://api.dicebear.com/7.x/bottts/svg?seed=${email}`
             });
 
             newUser.save()
@@ -142,7 +164,19 @@ function sendVerificationEmail(email) {
         });
 }
 
-
+app.get("/auth/google", (req, res) => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            const user = result.user;
+            console.log("Google login successful:", user.displayName);
+            res.redirect("/home");
+        })
+        .catch((error) => {
+            console.error("Google login error:", error);
+            res.redirect("/login");
+        });
+});
 app.get("/forgot-password", function (req, res) {
     res.render("forgot-password");
 });
@@ -154,6 +188,73 @@ app.get("/home", function (req, res) {
 
 app.get("/", function (req, res) {
     res.render('landing.ejs');
+});
+
+app.get("/blog", async (req, res) => {
+    try {
+        const blogs = await Blog.find();
+        res.render("blog", { blogs });
+    } catch (error) {
+        console.error("Error fetching blogs:", error);
+        res.render("blogs", { blogs: [] });
+    }
+});
+app.get("/blogContent", (req, res) => {
+    res.render("blogContent");
+});
+app.get("/blog/:id", async (req, res) => {
+    const blogId = req.params.id;
+    try {
+        const blog = await Blog.findById(blogId);
+        if (blog) {
+            res.render("blogContent", { blog });
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (error) {
+        console.error("Error fetching blog details:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+app.get("/blog/prev/:id", async (req, res) => {
+    const currentBlogId = req.params.id;
+    try {
+        const currentBlog = await Blog.findById(currentBlogId);
+        if (currentBlog) {
+            const prevBlog = await Blog.findOne({ _id: { $lt: currentBlogId } }).sort({ _id: -1 });
+            if (prevBlog) {
+                res.redirect(`/blog/${prevBlog._id}`);
+            } else {
+                res.redirect(`/blog/${currentBlog._id}`);
+            }
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (error) {
+        console.error("Error fetching previous blog:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+app.get("/blog/next/:id", async (req, res) => {
+    const currentBlogId = req.params.id;
+    try {
+        const currentBlog = await Blog.findById(currentBlogId);
+        if (currentBlog) {
+            const nextBlog = await Blog.findOne({ _id: { $gt: currentBlogId } }).sort({ _id: 1 });
+            if (nextBlog) {
+                res.redirect(`/blog/${nextBlog._id}`);
+            } else {
+                res.redirect(`/blog/${currentBlog._id}`);
+            }
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (error) {
+        console.error("Error fetching next blog:", error);
+        res.status(500).send("An error occurred");
+    }
 });
 
 

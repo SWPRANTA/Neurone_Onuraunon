@@ -1,4 +1,3 @@
-
 <link rel="icon" href="/images/icon.png">
 
 <!-- Google Fonts -->
@@ -13,6 +12,7 @@
 <link rel="stylesheet" href="/css/problems.css">
 <link rel="stylesheet" href="/css/homepage.css">
 <link rel="stylesheet" href="/css/problemDetail.css">
+<link rel="stylesheet" href="/css/blog.css">
 
 
 
@@ -21,30 +21,48 @@
 </head>
 
 <body>
-<section class="header-section" id="header">
-    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="/image/Neurone Onuraunon Logo with Name.svg" class="img-responsive" alt="Neurone Onuraunon Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav ms-auto navbar-item">
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/problems">Problems</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#pricing">Contests</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#cta">Community</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#cta">Blog/Tutorials</a>
-                    </li>
-                    
-            
+    <section class="header-section" id="header">
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="http://localhost:3000/home">
+                    <img src="/image/Neurone Onuraunon Logo with Name.svg" class="img-responsive"
+                        alt="Neurone Onuraunon Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav ms-auto navbar-item">
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://localhost:3000/problems">Problems</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pricing">Contests</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#cta">Community</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://localhost:3000/blog">Blog/Tutorials</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <div class="dropdown mb-2 nav-link">
+                                <button class="btn dropdown-toggle" type="button" id="profileButton"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Profile
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="profileButton">
+                                    <a class="dropdown-item" href="#">Dashboard</a>
+                                    <a class="dropdown-item" href="#">Notification</a>
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>

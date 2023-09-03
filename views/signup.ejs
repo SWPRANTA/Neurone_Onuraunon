@@ -65,7 +65,7 @@
                 <div>
                     <br>
                     <span>
-                        <a href="#"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
+                        <a href="/auth/google"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
                     </span>
                     <span>
                         <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a>
@@ -73,48 +73,69 @@
                 </div>
         </form>
     </div>
+    <script>
+        const googleLoginButton = document.getElementById("google-login");
+        googleLoginButton.addEventListener("click", () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            firebase.auth()
+                .signInWithPopup(provider)
+                .then((result) => {
+                    // You can access user information from `result.user`
+                    const user = result.user;
+                    console.log("Google Sign-In Successful:", user);
+
+                    // Redirect the user to the home page or perform other actions as needed.
+                    window.location.href = "/home";
+                })
+                .catch((error) => {
+                    console.error("Google Sign-In Error:", error);
+                    window.location.href = "/signup";
+                });
+        });
+    </script>
 
     <!-- Add this script code before the closing </body> tag -->
     <script>
         const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirmPassword");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
 
-    // Disable copy and paste events for password input
-    passwordInput.addEventListener("copy", function (e) {
-        e.preventDefault();
-    });
-
-    passwordInput.addEventListener("paste", function (e) {
-        e.preventDefault();
-    });
-
-    // Disable copy and paste events for confirm password input
-    confirmPasswordInput.addEventListener("copy", function (e) {
-        e.preventDefault();
-    });
-
-    confirmPasswordInput.addEventListener("paste", function (e) {
-        e.preventDefault();
-    });
-
-    const togglePassword = document.querySelectorAll(".toggle-password");
-
-    togglePassword.forEach(button => {
-        button.addEventListener("click", function () {
-            const inputField = this.closest(".custom-input").querySelector("input");
-            const isVisible = inputField.getAttribute("type") === "text";
-
-            if (isVisible) {
-                inputField.setAttribute("type", "password");
-                this.classList.remove("fa-eye");
-                this.classList.add("fa-eye-slash");
-            } else {
-                inputField.setAttribute("type", "text");
-                this.classList.remove("fa-eye-slash");
-                this.classList.add("fa-eye");
-            }
+        // Disable copy and paste events for password input
+        passwordInput.addEventListener("copy", function (e) {
+            e.preventDefault();
         });
-    });
+
+        passwordInput.addEventListener("paste", function (e) {
+            e.preventDefault();
+        });
+
+        // Disable copy and paste events for confirm password input
+        confirmPasswordInput.addEventListener("copy", function (e) {
+            e.preventDefault();
+        });
+
+        confirmPasswordInput.addEventListener("paste", function (e) {
+            e.preventDefault();
+        });
+
+        const togglePassword = document.querySelectorAll(".toggle-password");
+
+        togglePassword.forEach(button => {
+            button.addEventListener("click", function () {
+                const inputField = this.closest(".custom-input").querySelector("input");
+                const isVisible = inputField.getAttribute("type") === "text";
+
+                if (isVisible) {
+                    inputField.setAttribute("type", "password");
+                    this.classList.remove("fa-eye");
+                    this.classList.add("fa-eye-slash");
+                } else {
+                    inputField.setAttribute("type", "text");
+                    this.classList.remove("fa-eye-slash");
+                    this.classList.add("fa-eye");
+                }
+            });
+        });
     </script>
 
 </body>

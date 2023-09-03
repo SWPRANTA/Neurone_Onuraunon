@@ -53,14 +53,59 @@ mongoose
             }
             return mappedRow;
         });
-        // Insert data into the new database
         return Problem.insertMany(mappedData);
     })
     .then((docs) => {
-        console.log('Documents inserted successfully: ', docs);
+        console.log('Problems inserted successfully: ', docs);
     })
     .then(() => {
-        // Define the user schema
+        const blogSchema = new mongoose.Schema({
+            title: {
+                type: String,
+                required: true
+            },
+            description: {
+                type: String,
+                required: true
+            },
+            date: {
+                type: Date,
+                required: true
+            },
+            imageUrl: {
+                type: String,
+                required: true
+            }
+        });
+
+        const Blog = mongoose.model("Blog", blogSchema);
+        const workbook = xlsx.readFile('Blog Contents.xlsx');
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        const desiredColumns = ['Title', 'Content', 'UploadDate', 'ImageLink'];
+        const excelData = xlsx.utils.sheet_to_json(worksheet, { header: desiredColumns, range: 1 });
+
+        const columnData = {
+            'Title': 'title',
+            'Content': 'description',
+            'UploadDate': 'date',
+            'ImageLink': 'imageUrl'
+        };
+
+        const mappedData = excelData.map((row) => {
+            const mappedRow = {};
+            for (const column of desiredColumns) {
+                const field = columnData[column];
+                mappedRow[field] = row[column];
+            }
+            return mappedRow;
+        });
+        return Blog.insertMany(mappedData);
+    })
+    .then((docs) => {
+        console.log('Blog inserted successfully: ', docs);
+    })
+    .then(() => {
         const userSchema = new mongoose.Schema({
             name: {
                 type: String,
@@ -94,8 +139,6 @@ mongoose
     })
     .then((user) => {
         console.log('User created: ', user);
-
-        // Close the MongoDB connection
         mongoose.connection.close();
     })
     .catch((err) => {
