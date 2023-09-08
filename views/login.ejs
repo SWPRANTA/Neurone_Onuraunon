@@ -16,6 +16,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
 
 </head>
 
@@ -59,14 +62,59 @@
 
                 <br>
                 <span>
-                    <a href="#"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
+                    <a id="google-auth"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
                 </span>
+
                 <button type="submit" name="loginButton">Login</button>
             </form>
         </div>
 
     </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCyVtl534FJtcPz3eYKp1vKyBXkgj_6cg",
+            authDomain: "neurone-onuraunon-f4d75.firebaseapp.com",
+            projectId: "neurone-onuraunon-f4d75",
+            storageBucket: "neurone-onuraunon-f4d75.appspot.com",
+            messagingSenderId: "498240868731",
+            appId: "1:498240868731:web:de455f8ade4e86e5af2dde",
+            measurementId: "G-GC9VNB6B4C"
+        };
 
+        firebase.initializeApp(firebaseConfig);
+
+        // Now you can use Firebase Authentication
+        const auth = firebase.auth();
+
+        // Your Google Sign-In function
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth
+                .signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Google user signed in:", result.user.email);
+                    window.location.href = "/home";
+                })
+                .catch((error) => {
+                    console.error(
+                        "Google authentication error:",
+                        error.code,
+                        error.message
+                    );
+                });
+        }
+
+        // Event listener for the Google Sign-In button
+        const googleSignUpLink = document.getElementById("google-auth");
+
+        if (googleSignUpLink) {
+            googleSignUpLink.addEventListener("click", (event) => {
+
+                loginWithGoogle();
+            });
+        }
+    </script>
     <script>
 
         const togglePassword = document.querySelector(".toggle-password");

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Blog</title>
+    <%- include("header") -%>
+        <div class="container mt-5">
+            <div id="table-title">
+                <h1>The Knowledge Hub: Explore Our Latest Blog Posts</h1>
+            </div>
+            <hr id="horizontal-rule">
+        </div>
+        <section id="blogs">
+            <div class="row custom-row mb-3">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <% for (const blog of blogs) { %>
+                        <div class="col">
+                            <div class="card h-100 custom-card" onclick="window.location.href='/blog/<%= blog._id %>';">
+                                <img src="<%=blog.imageUrl%>" class="card-img-top custom-card-img" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title custom-card-title">
+                                        <%= blog.title %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <% const firstLineBreakIndex=blog.description.indexOf('\n'); %>
+                                            <%= firstLineBreakIndex !==-1 ? blog.description.substring(0,
+                                                firstLineBreakIndex) + "..." : blog.description.substring(0, 150)
+                                                + "..." %>
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-body-secondary">Last updated <%= blog.date.toDateString() %>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
+        </section>
+
+
+        <%- include("footer") -%>

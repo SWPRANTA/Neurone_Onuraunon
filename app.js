@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
+const { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
 
 
 app.set("view engine", "ejs");
@@ -21,7 +21,13 @@ mongoose
     });
 
 const firebaseConfig = {
-    
+    apiKey: "AIzaSyBCyVtl534FJtcPz3eYKp1vKyBXkgj_6cg",
+    authDomain: "neurone-onuraunon-f4d75.firebaseapp.com",
+    projectId: "neurone-onuraunon-f4d75",
+    storageBucket: "neurone-onuraunon-f4d75.appspot.com",
+    messagingSenderId: "498240868731",
+    appId: "1:498240868731:web:de455f8ade4e86e5af2dde",
+    measurementId: "G-GC9VNB6B4C"
 };
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
@@ -55,9 +61,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model("Blog", blogSchema);
 
 function requireAuth(req, res, next) {
-    const auth = getAuth();
-
-    if (auth.currentUser) {
+    if (req.originalUrl === '/home' || auth.currentUser) {
         next();
     } else {
         res.redirect("/login");
@@ -164,23 +168,49 @@ function sendVerificationEmail(email) {
         });
 }
 
-app.get("/auth/google", (req, res) => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            const user = result.user;
-            console.log("Google login successful:", user.displayName);
-            res.redirect("/home");
-        })
-        .catch((error) => {
-            console.error("Google login error:", error);
-            res.redirect("/login");
-        });
-});
+
 app.get("/forgot-password", function (req, res) {
     res.render("forgot-password");
 });
 
+
+app.post("/forgot-password", (req, res) => {
+    const email = req.body.email;
+
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            console.log("Password reset email sent successfully.");
+            res.redirect("/login");
+        })
+        .catch((error) => {
+            console.error("Error sending password reset email:", error);
+            res.render("forgot-password", { errorMessage: "Failed to send password reset email." });
+        });
+});
+
+app.get("/reset-password", (req, res) => {
+    res.render("reset-password");
+});
+
+app.post("/reset-password", (req, res) => {
+    const newPassword = req.body.newPassword;
+    const confirmPassword = req.body.confirmPassword;
+
+    if (newPassword !== confirmPassword) {
+        return res.render("reset-password", { errorMessage: "Passwords do not match." });
+    }
+
+    const user = auth.currentUser;
+    updatePassword(user, newPassword)
+        .then(() => {
+            console.log("Password updated successfully.");
+            res.redirect("/login");
+        })
+        .catch((error) => {
+            console.error("Error updating password:", error);
+            res.render("reset-password", { errorMessage: "Failed to update password." });
+        });
+});
 
 app.get("/home", function (req, res) {
     res.render("home");
@@ -256,17 +286,36 @@ app.get("/blog/next/:id", async (req, res) => {
         res.status(500).send("An error occurred");
     }
 });
-
-
 app.get("/problems", async (req, res) => {
     try {
-        const problems = await Problem.find();
-        res.render("problems", { problems });
+        const page = req.query.page || 1; // Default to page 1 if no page query parameter is provided
+        const problemsPerPage = 15; // Number of problems to display per page
+        const skip = (page - 1) * problemsPerPage; // Calculate the number of problems to skip
+
+        const keyword = req.query.keyword || ''; // Get the keyword from the query parameter
+
+        let query = {}; // Create an empty query object
+        if (keyword) {
+            // If a keyword is provided, add a title search condition
+            query = { title: { $regex: keyword, $options: 'i' } }; // Case-insensitive search
+        }
+
+        // Query the database to get a subset of problems for the current page
+        const problems = await Problem.find(query).skip(skip).limit(problemsPerPage);
+
+        // Calculate the total number of problems in the database
+        const totalProblems = await Problem.countDocuments(query);
+
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(totalProblems / problemsPerPage);
+
+        res.render("problems", { problems, page, totalPages, keyword }); // Pass keyword as a local
     } catch (error) {
         console.error("Error fetching problems:", error);
-        res.render("problems", { problems: [] });
+        res.render("problems", { problems: [], page: 1, totalPages: 1, keyword: '' }); // Provide default values
     }
 });
+
 
 app.get("/problems/:id", async (req, res) => {
     const problemId = req.params.id;
@@ -286,6 +335,31 @@ app.get("/problems/:id", async (req, res) => {
 app.get("/problemDetail", (req, res) => {
     res.render("problemDetail");
 });
+
+app.post("/check-answer/:id", async (req, res) => {
+    const problemId = req.params.id;
+    const userAnswer = req.body.userAnswer;
+
+    try {
+        const problem = await Problem.findById(problemId);
+        if (problem) {
+            const correctAnswer = problem.solution;
+            if (userAnswer === correctAnswer) {
+                // Send a JSON response indicating a correct answer
+                res.json({ result: "correct", message: "Correct answer! Well done!" });
+            } else {
+                // Send a JSON response indicating an incorrect answer
+                res.json({ result: "incorrect", message: "Incorrect answer. Please try again." });
+            }
+        } else {
+            res.status(404).send("Problem not found");
+        }
+    } catch (error) {
+        console.error("Error checking answer:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+  
 
 app.get("/verify-email", (req, res) => {
     res.render("verify-email");
