@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Problems</title>
+
+    <%- include("admin-header") -%>
+    <div class="fixed-action-button">
+        <a href="/add-problem" class="add-button btn-floating btn-large blue btn-custom-admin">
+            <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
+        </a>
+    </div>
+
+        <section class="problems-section">
+            <div class="container">
+                <div id="table-title">
+                <h1>Problems</h1>
+            </div>
+                <hr id="horizontal-rule">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Statement</th>
+                            <th scope="col">Solution</th>
+                            <th scope="col">Points</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% problems.forEach((problem)=>{%>
+                            <tr>
+                                <th scope="row">
+                                    <%= problem._id %>
+                                </th>
+                                <td>
+                                    <%= problem.title %>
+                                </td>
+                                <td>
+                                    <%= problem.statement %>
+                                </td>
+                                <td>
+                                    <%= problem.solution %>
+                                </td>
+                                <td>
+                                    <%= problem.points %>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="/update-problem/<%= problem._id %>"><button
+                                                class="btn mb-3 btn-custom-admin"><i class="fa-solid fa-pen-to-square"
+                                                    style="color: #ffffff;"></i></button></a>
+                                        <a href="/delete-problem/<%= problem._id %>"><button class="btn mb-0 btn-custom-admin"><i
+                                                    class="fa-solid fa-trash" style="color: #ffffff;"></i></button></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+       
+
+        <%- include("footer") -%>

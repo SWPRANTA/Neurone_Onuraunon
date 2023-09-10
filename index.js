@@ -28,6 +28,14 @@ mongoose
             points: {
                 type: Number,
                 required: true
+            },
+            solved_count: {
+                type: Number,
+                default: 0
+            },
+            attempt:{
+               type: Number,
+               default: 0 
             }
         });
 

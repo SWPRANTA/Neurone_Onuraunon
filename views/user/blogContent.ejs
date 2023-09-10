@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon | <%= blog.title %>
+    </title>
+    <%- include("header") -%>
+
+        <!-- Blog Content section-->
+        <section id="blogContent">
+            <div class="row custom-row">
+                <div class="col component mb-4">
+                    <div class="container mt-2">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div id="blog-title">
+                                            <%= blog.title %>
+                                        </div>
+                                        <div id="date">
+                                            <%= "Uploaded on: " + blog.date  %>
+                                        </div>
+
+                    </div>
+                    <hr id="horizontal-rule">
+                    <div>
+                        <%= blog.description %>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <tr>
+                        <td class="d-flex justify-content-between">
+                            <span class="table-cell-with-input d-flex justify-content-start">
+                                <button class="btn me-2"><i class="fa fa-lg fa-circle-up up-down"></i>
+                                    Upvote</button>
+                                <button class="btn me-2"><i class="fa fa-lg fa-circle-down up-down"></i>
+                                    Downvote</button>
+                            </span>
+                            <span class="table-cell-with-input d-flex justify-content-end">
+                                <button class="btn btn-custom-blog me-2" onclick="window.location.href='/blog/prev/<%= blog._id %>';">Previous</button>
+                                <button class="btn btn-custom-blog" onclick="window.location.href='/blog/next/<%= blog._id %>';">Next</button>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <%- include("footer") -%>

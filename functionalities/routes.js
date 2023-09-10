@@ -1,85 +1,20 @@
+
 const express = require("express");
-const mongoose = require("mongoose");
-const app = express();
-const port = process.env.PORT || 3000;
-const bodyParser = require('body-parser');
-const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
+const authMiddleware = require("./authMiddleware");
+const auth = require("./firebase");
+const { Problem, User, Blog } = require("./models");
+const {getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
+const router = express.Router();
 
-
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({ extended: true }));
-
-mongoose
-    .connect("mongodb://127.0.0.1:27017/neurone_onuraunon", { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("mongoose started");
-    })
-    .catch((err) => {
-        console.log("Error: ", err);
-    });
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBCyVtl534FJtcPz3eYKp1vKyBXkgj_6cg",
-    authDomain: "neurone-onuraunon-f4d75.firebaseapp.com",
-    projectId: "neurone-onuraunon-f4d75",
-    storageBucket: "neurone-onuraunon-f4d75.appspot.com",
-    messagingSenderId: "498240868731",
-    appId: "1:498240868731:web:de455f8ade4e86e5af2dde",
-    measurementId: "G-GC9VNB6B4C"
-};
-const appFirebase = initializeApp(firebaseConfig);
-const auth = getAuth(appFirebase);
-
-const problemSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    statement: { type: String, required: true },
-    solution: { type: String, required: true },
-    points: { type: Number, required: true }
-});
-const Problem = mongoose.model("Problem", problemSchema);
-
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
-    problemsSolved: { type: Number, default: 0 },
-    contestsJoined: { type: Number, default: 0 },
-    imageLink: { type: String, default: '' }
+router.get("/landing", function (req, res) {
+  res.render("user/landing");
 });
 
-const User = mongoose.model("User", userSchema);
-
-const blogSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    date: { type: Date, required: true },
-    imageUrl: { type: String, required: true }
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
-
-function requireAuth(req, res, next) {
-    if (req.originalUrl === '/home' || auth.currentUser) {
-        next();
-    } else {
-        res.redirect("/login");
-    }
-}
-
-app.use(["/profile", "/dashboard", "/home", "/problems", "/problemDetail", "/blog", "/monthly-contest", "/leaderboard", "/contest", "/event", "/community"], requireAuth);
-
-
-app.get("/landing", function (req, res) {
-    res.render("landing");
-});
-
-app.get("/login", function (req, res) {
+router.get("/login", function (req, res) {
     res.render("login", { errorMessage: null });
 });
 
-app.post("/login", (req, res) => {
+router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -97,7 +32,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.get("/logout", function (req, res) {
+router.get("/logout", function (req, res) {
     signOut(auth)
         .then(() => {
             console.log("User logged out successfully.");
@@ -105,21 +40,21 @@ app.get("/logout", function (req, res) {
         })
         .catch((error) => {
             console.error("Logout error:", error);
-            res.redirect("/home"); // Redirect to home page even on logout error
+            res.redirect("/home");
         });
 });
 
-app.get("/signup", function (req, res) {
-    res.render("signup", { errorMessage: "" });
+router.get("/signup", function (req, res) {
+    res.render("user/signup", { errorMessage: "" });
 });
 
-app.post("/signup", (req, res) => {
+router.post("/signup", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
     const name = req.body.name;
     if (password !== confirmPassword) {
-        return res.render("signup", { errorMessage: "Passwords do not match." });
+        return res.render("user/signup", { errorMessage: "Passwords do not match." });
     }
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -148,7 +83,7 @@ app.post("/signup", (req, res) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.error("Registration error:", errorCode, errorMessage);
-            res.render("signup", { errorMessage: "An error occurred during registration." });
+            res.render("user/signup", { errorMessage: "An error occurred during registration." });
         });
 });
 
@@ -156,7 +91,7 @@ app.post("/signup", (req, res) => {
 function sendVerificationEmail(email) {
     const actionCodeSettings = {
         url: `http://localhost:3000/verify?email=${email}`,
-        handleCodeInApp: true
+        handleCodeInrouter: true
     };
 
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
@@ -169,12 +104,12 @@ function sendVerificationEmail(email) {
 }
 
 
-app.get("/forgot-password", function (req, res) {
-    res.render("forgot-password");
+router.get("/forgot-password", function (req, res) {
+    res.render("user/forgot-password");
 });
 
 
-app.post("/forgot-password", (req, res) => {
+router.post("/forgot-password", (req, res) => {
     const email = req.body.email;
 
     sendPasswordResetEmail(auth, email)
@@ -184,15 +119,15 @@ app.post("/forgot-password", (req, res) => {
         })
         .catch((error) => {
             console.error("Error sending password reset email:", error);
-            res.render("forgot-password", { errorMessage: "Failed to send password reset email." });
+            res.render("user/forgot-password", { errorMessage: "Failed to send password reset email." });
         });
 });
 
-app.get("/reset-password", (req, res) => {
-    res.render("reset-password");
+router.get("/reset-password", (req, res) => {
+    res.render("user/reset-password");
 });
 
-app.post("/reset-password", (req, res) => {
+router.post("/reset-password", (req, res) => {
     const newPassword = req.body.newPassword;
     const confirmPassword = req.body.confirmPassword;
 
@@ -208,36 +143,36 @@ app.post("/reset-password", (req, res) => {
         })
         .catch((error) => {
             console.error("Error updating password:", error);
-            res.render("reset-password", { errorMessage: "Failed to update password." });
+            res.render("user/reset-password", { errorMessage: "Failed to update password." });
         });
 });
 
-app.get("/home", function (req, res) {
-    res.render("home");
+router.get("/home", function (req, res) {
+    res.render("user/home");
 });
 
-app.get("/", function (req, res) {
-    res.render('landing.ejs');
+router.get("/", function (req, res) {
+    res.render('user/landing.ejs');
 });
 
-app.get("/blog", async (req, res) => {
+router.get("/blog", async (req, res) => {
     try {
         const blogs = await Blog.find();
-        res.render("blog", { blogs });
+        res.render("user/blog", { blogs });
     } catch (error) {
         console.error("Error fetching blogs:", error);
-        res.render("blogs", { blogs: [] });
+        res.render("user/blog", { blogs: [] });
     }
 });
-app.get("/blogContent", (req, res) => {
+router.get("/blogContent", (req, res) => {
     res.render("blogContent");
 });
-app.get("/blog/:id", async (req, res) => {
+router.get("/blog/:id", async (req, res) => {
     const blogId = req.params.id;
     try {
         const blog = await Blog.findById(blogId);
         if (blog) {
-            res.render("blogContent", { blog });
+            res.render("user/blogContent", { blog });
         } else {
             res.status(404).send("Blog not found");
         }
@@ -247,7 +182,7 @@ app.get("/blog/:id", async (req, res) => {
     }
 });
 
-app.get("/blog/prev/:id", async (req, res) => {
+router.get("/blog/prev/:id", async (req, res) => {
     const currentBlogId = req.params.id;
     try {
         const currentBlog = await Blog.findById(currentBlogId);
@@ -267,7 +202,7 @@ app.get("/blog/prev/:id", async (req, res) => {
     }
 });
 
-app.get("/blog/next/:id", async (req, res) => {
+router.get("/blog/next/:id", async (req, res) => {
     const currentBlogId = req.params.id;
     try {
         const currentBlog = await Blog.findById(currentBlogId);
@@ -286,43 +221,40 @@ app.get("/blog/next/:id", async (req, res) => {
         res.status(500).send("An error occurred");
     }
 });
-app.get("/problems", async (req, res) => {
+router.get("/problems", async (req, res) => {
     try {
-        const page = req.query.page || 1; // Default to page 1 if no page query parameter is provided
-        const problemsPerPage = 15; // Number of problems to display per page
-        const skip = (page - 1) * problemsPerPage; // Calculate the number of problems to skip
+        const page = req.query.page || 1; 
+        const problemsPerPage = 15; 
+        const skip = (page - 1) * problemsPerPage; 
 
-        const keyword = req.query.keyword || ''; // Get the keyword from the query parameter
+        const keyword = req.query.keyword || ''; 
 
-        let query = {}; // Create an empty query object
+        let query = {};
         if (keyword) {
-            // If a keyword is provided, add a title search condition
-            query = { title: { $regex: keyword, $options: 'i' } }; // Case-insensitive search
+
+            query = { title: { $regex: keyword, $options: 'i' } };
         }
 
-        // Query the database to get a subset of problems for the current page
         const problems = await Problem.find(query).skip(skip).limit(problemsPerPage);
 
-        // Calculate the total number of problems in the database
         const totalProblems = await Problem.countDocuments(query);
 
-        // Calculate the total number of pages
         const totalPages = Math.ceil(totalProblems / problemsPerPage);
 
-        res.render("problems", { problems, page, totalPages, keyword }); // Pass keyword as a local
+        res.render("user/problems", { problems, page, totalPages, keyword });
     } catch (error) {
         console.error("Error fetching problems:", error);
-        res.render("problems", { problems: [], page: 1, totalPages: 1, keyword: '' }); // Provide default values
+        res.render("user/problems", { problems: [], page: 1, totalPages: 1, keyword: '' });
     }
 });
 
 
-app.get("/problems/:id", async (req, res) => {
+router.get("/problems/:id", async (req, res) => {
     const problemId = req.params.id;
     try {
         const problem = await Problem.findById(problemId);
         if (problem) {
-            res.render("problemDetail", { problem });
+            res.render("user/problemDetail", { problem });
         } else {
             res.status(404).send("Problem not found");
         }
@@ -332,11 +264,11 @@ app.get("/problems/:id", async (req, res) => {
     }
 });
 
-app.get("/problemDetail", (req, res) => {
-    res.render("problemDetail");
+router.get("/problemDetail", (req, res) => {
+    res.render("user/problemDetail");
 });
 
-app.post("/check-answer/:id", async (req, res) => {
+router.post("/check-answer/:id", async (req, res) => {
     const problemId = req.params.id;
     const userAnswer = req.body.userAnswer;
 
@@ -345,10 +277,8 @@ app.post("/check-answer/:id", async (req, res) => {
         if (problem) {
             const correctAnswer = problem.solution;
             if (userAnswer === correctAnswer) {
-                // Send a JSON response indicating a correct answer
                 res.json({ result: "correct", message: "Correct answer! Well done!" });
             } else {
-                // Send a JSON response indicating an incorrect answer
                 res.json({ result: "incorrect", message: "Incorrect answer. Please try again." });
             }
         } else {
@@ -361,15 +291,112 @@ app.post("/check-answer/:id", async (req, res) => {
 });
   
 
-app.get("/verify-email", (req, res) => {
+router.get("/verify-email", (req, res) => {
     res.render("verify-email");
 });
 
-app.get("/verify", (req, res) => {
+router.get("/verify", (req, res) => {
     const email = req.query.email;
     res.redirect("/home");
 });
 
-app.listen(port, function () {
-    console.log(`Server is running on port ${port}`);
+router.get("/admin", async (req, res) => {
+    try {
+        const problems = await Problem.find();
+        res.render("admin/admin", { problems });
+    } catch (error) {
+        console.error("Error fetching problems:", error);
+        res.render("admin/admin", { problems: [] });
+    }
 });
+router.get("/modify-problem", async (req, res) => {
+    try {
+        const problems = await Problem.find();
+        res.render("admin/modify-problem", { problems });
+    } catch (error) {
+        console.error("Error fetching problems:", error);
+        res.render("admin/modify-problem", { problems: [] });
+    }
+});
+router.get("/delete-problem/:id", async (req, res) => {
+    const problemId = req.params.id;
+    try {
+        const problem = await Problem.findByIdAndRemove(problemId);
+        if (problem) {
+            console.log("Problem deleted:", problem.title);
+        }
+        res.redirect("/modify-problem");
+    } catch (error) {
+        console.error("Error deleting problem:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+
+router.get("/update-problem/:id", async (req, res) => {
+    const problemId = req.params.id;
+    try {
+        const problem = await Problem.findById(problemId);
+        if (problem) {
+            res.render("admin/update-problem", { problem });
+        } else {
+            res.status(404).send("Problem not found");
+        }
+    } catch (error) {
+        console.error("Error fetching problem details:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+router.post("/update-problem/:id", async (req, res) => {
+    const problemId = req.params.id;
+    const { title, statement, points, solution } = req.body;
+
+    try {
+        const problem = await Problem.findByIdAndUpdate(problemId, {
+            title,
+            statement,
+            points,
+            solution,
+        });
+
+        if (problem) {
+            console.log("Problem updated:", problem.title);
+            res.redirect("/modify-problem");
+        } else {
+            res.status(404).send("Problem not found");
+        }
+    } catch (error) {
+        console.error("Error updating problem:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+
+
+router.get("/add-problem", function (req, res) {
+    res.render("admin/add-problem");
+});
+
+router.post("/create-problem", async (req, res) => {
+    const { title, statement, points, solution } = req.body;
+
+    try {
+        const newProblem = new Problem({
+            title,
+            statement,
+            points,
+            solution,
+        });
+
+        await newProblem.save();
+        console.log("New problem added:", newProblem.title);
+        res.redirect("/modify-problem");
+    } catch (error) {
+        console.error("Error creating problem:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+
+module.exports = router;

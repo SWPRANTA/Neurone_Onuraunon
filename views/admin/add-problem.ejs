@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Problems</title>
+
+    <%- include("admin-header") -%>
+        <section class="add-problem-section">
+            <div class="container">
+                <h3>Add a New Problem</h3>
+                <hr id="horizontal-rule">
+                <form action="/create-problem" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statement" class="form-label">Statement</label>
+                        <textarea class="form-control" id="statement" name="statement" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="points" class="form-label">Points</label>
+                        <input type="number" class="form-control" id="points" name="points" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="solution" class="form-label">Solution</label>
+                        <input class="form-control" id="solution" name="solution" rows="4" required>
+                    </div>
+                    <button type="submit" class="btn btn-custom-admin mb-5">Create</button>
+                </form>
+            </div>
+        </section>
+        <%- include("footer") -%>

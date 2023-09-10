@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neurone Onuraunon - Practice Problems</title>
+  <%- include("header") -%>
+    <!-- Problems Section -->
+    <div class="fixed-action-button">
+      <a href="/add-problem" class="add-button btn-floating btn-large blue btn-custom-admin">
+          <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
+      </a>
+  </div>
+  
+    <section id="problem-set">
+      <div class="container mt-5">
+        <div id="table-title">
+          <h1>Math Problems</h1>
+        </div>
+        <hr id="horizontal-rule">
+      </div>
+
+      <div class="row custom-row">
+        <div class="col-md-8 left-column">
+          <div class="p-3 mb-2">
+            <div class="dropdown mb-2">
+              <button class="btn btn-secondary dropdown-toggle sort-by-button" type="button" id="sortByDropdown"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort By
+              </button>
+              <div class="dropdown-menu" aria-labelledby="sortByDropdown">
+                <a class="dropdown-item" href="#">Most Solved</a>
+                <a class="dropdown-item" href="#">Difficulty</a>
+                <a class="dropdown-item" href="#">Newest</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 ms-auto right-column">
+          
+            <form action="/problems" method="GET">
+              <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="keyword" placeholder="Search...">
+                  <button class="btn btn-outline-secondary" type="submit">Search</button>
+              </div>
+          </form>
+          </div>
+        
+      </div>
+
+      <div class="row custom-row">
+        <div class="col-md-8 left-column">
+          <div class="container mt-2">
+              <table class="table">
+                  <% if (problems.length > 0) { %>
+                      <% problems.forEach((problem)=> { %>
+                          <tr class="link-cell" onclick="window.location.href='/problems/<%= problem._id %>';">
+                              <td>
+                                  <div>
+                                      <%= problem.title %>
+                                  </div>
+                                  <div>Points: <%= problem.points %>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr class="spacer"></tr>
+                      <% }); %>
+                  <% } else { %>
+                      <tr>
+                          <td colspan="2">No Problems Found</td>
+                      </tr>
+                  <% } %>
+              </table>
+          </div>
+      </div>
+
+        <div class="col-md-4 mt-2 ms-auto right-column">
+          <div class="p-3 mb-3 component">
+            <h4>Component 2</h4>
+            <p>This is the second component content.</p>
+          </div>
+          <div class="p-2 mb-1 component">
+            <div class="container mt-2">
+              <div>
+                <h1 id="top-chart">Top Chart</h1>
+              </div>
+              <hr id="horizontal-rule">
+            </div>
+
+            <table class="table">
+              <tbody>
+                <tr class="link-cell" onclick="window.location.href='link1.html';">
+                  <td>
+                    <div>#1</div>
+                  </td>
+                  <td>
+                    <div>Jahid_05</div>
+                  </td>
+                  <td>
+                    <div>984</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link2.html';">
+                  <td>
+                    <div>#2</div>
+                  </td>
+                  <td>
+                    <div>Hassan@56</div>
+                  </td>
+                  <td>
+                    <div>964</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link3.html';">
+                  <td>
+                    <div>#3</div>
+                  </td>
+                  <td>
+                    <div>Problem_maker23</div>
+                  </td>
+                  <td>
+                    <div>950</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link4.html';">
+                  <td>
+                    <div>#4</div>
+                  </td>
+                  <td>
+                    <div>Joseph_88</div>
+                  </td>
+                  <td>
+                    <div>800</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#5</div>
+                  </td>
+                  <td>
+                    <div>Natasha@77</div>
+                  </td>
+                  <td>
+                    <div>755</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#6</div>
+                  </td>
+                  <td>
+                    <div>Mahathir_45</div>
+                  </td>
+                  <td>
+                    <div>654</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#7</div>
+                  </td>
+                  <td>
+                    <div>Fatima</div>
+                  </td>
+                  <td>
+                    <div>650</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#8</div>
+                  </td>
+                  <td>
+                    <div>Wadud@12</div>
+                  </td>
+                  <td>
+                    <div>642</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#9</div>
+                  </td>
+                  <td>
+                    <div>Afif_Ashraf</div>
+                  </td>
+                  <td>
+                    <div>635</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div>#10</div>
+                  </td>
+                  <td>
+                    <div>Shakil_06</div>
+                  </td>
+                  <td>
+                    <div>630</div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div></div>
+                  </td>
+                  <td>
+                    <div id="see">See all</div>
+                  </td>
+                  <td>
+                    <div></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container">
+        <nav aria-label="...">
+            <ul class="pagination">
+                <% if (totalPages > 1) { %>
+                    <% if (page > 1) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/problems?page=<%= page - 1 %>">Previous</a>
+                        </li>
+                    <% } %>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= page == i ? 'active' : '' %>">
+                            <a class="page-link" href="/problems?page=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <% if (page < totalPages) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="/problems?page=<%= page + 1 %>">Next</a>
+                        </li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+    
+    
+
+
+    </section>
+
+    <%- include("footer") -%>

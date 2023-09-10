@@ -1,0 +1,50 @@
+.action-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 50%;
+}
+
+.btn-custom-admin {
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+    color: #fff;
+    width: 100%;
+    font-family: 'Exo', sans-serif;
+}
+
+.btn-custom-admin:hover {
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: #fff;
+    transform: translateY(-2px) translateX(2px);
+}
+
+.problems-section{
+    font-family: 'Exo', sans-serif;
+}
+th{
+    text-align: center;
+}
+
+.add-button{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    border-radius: 50%;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+}
+
+.update-problem-section{
+    font-family: 'Exo', sans-serif;
+    font-weight: 500;
+}
+#update-title{
+    text-align: center;
+}

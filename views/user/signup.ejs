@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Neurone Onuraunon | Signup</title>
+    <link rel="icon" href="images/icon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:wght@300;400;700&family=Poppins:wght@100&display=swap"
+        rel="stylesheet">
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
+
+</head>
+
+<body>
+    <div class="box-form">
+        <div class="left">
+            <div class="overlay">
+                <img class="illustration" src="/images/illustration-2.png" alt="illustration-2" srcset="">
+                <h1 class="signup-title">Enter the Realm of <br>Neurone Onuraunon</h1>
+                <h2>Embark on Your Journey: Your Next Step Awaits!</h2>
+            </div>
+        </div>
+
+        <form action="/signup" method="post">
+            <div class="right">
+                <h5 class="signup-header">Signup</h5>
+                <p>Already have an account? <a href="http://localhost:3000/login">Log In!</a></p>
+
+                <div class="inputs">
+                    <input type="text" id="name" name="name" placeholder="Rabbi@05">
+                    <input type="email" id="email" name="email" placeholder="sample@gmail.com" required>
+                    <div class="custom-input">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <i class="fa fa-eye-slash toggle-password" style="color: #000000" aria-hidden="true"
+                            data-visible="false"></i>
+                    </div>
+                    <div class="custom-input">
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm Password" required>
+                        <i class="fa fa-eye-slash toggle-password" style="color: #000000" aria-hidden="true"
+                            data-visible="false"></i>
+                    </div>
+                </div>
+                <br><br>
+
+                <div class="remember-me--forget-password">
+                    <label>
+                        <input type="checkbox" id="rememberMe" name="item" checked />
+                        <span class="text-checkbox">Remember Me</span>
+                    </label>
+                    <button type="submit" name="signupButton">Sign Up</button>
+
+                </div>
+                <div>
+                    <br>
+                    <span>
+                        <a id="google-auth"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a>
+                    </span>
+                    <!-- <span>
+                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a>
+                    </span> -->
+                </div>
+        </form>
+    </div>
+
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCyVtl534FJtcPz3eYKp1vKyBXkgj_6cg",
+            authDomain: "neurone-onuraunon-f4d75.firebaseapp.com",
+            projectId: "neurone-onuraunon-f4d75",
+            storageBucket: "neurone-onuraunon-f4d75.appspot.com",
+            messagingSenderId: "498240868731",
+            appId: "1:498240868731:web:de455f8ade4e86e5af2dde",
+            measurementId: "G-GC9VNB6B4C"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Now you can use Firebase Authentication
+        const auth = firebase.auth();
+
+        // Your Google Sign-In function
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth
+                .signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Google user signed in:", result.user.email);
+                    window.location.href = "/home";
+                })
+                .catch((error) => {
+                    console.error(
+                        "Google authentication error:",
+                        error.code,
+                        error.message
+                    );
+                });
+        }
+
+        // Event listener for the Google Sign-In button
+        const googleSignUpLink = document.getElementById("google-auth");
+
+        if (googleSignUpLink) {
+            googleSignUpLink.addEventListener("click", (event) => {
+                
+                loginWithGoogle();
+            });
+        }
+    </script>
+
+    <!-- Add this script code before the closing </body> tag -->
+    <script>
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+
+        // Disable copy and paste events for password input
+        passwordInput.addEventListener("copy", function (e) {
+            e.preventDefault();
+        });
+
+        passwordInput.addEventListener("paste", function (e) {
+            e.preventDefault();
+        });
+
+        // Disable copy and paste events for confirm password input
+        confirmPasswordInput.addEventListener("copy", function (e) {
+            e.preventDefault();
+        });
+
+        confirmPasswordInput.addEventListener("paste", function (e) {
+            e.preventDefault();
+        });
+
+        const togglePassword = document.querySelectorAll(".toggle-password");
+
+        togglePassword.forEach(button => {
+            button.addEventListener("click", function () {
+                const inputField = this.closest(".custom-input").querySelector("input");
+                const isVisible = inputField.getAttribute("type") === "text";
+
+                if (isVisible) {
+                    inputField.setAttribute("type", "password");
+                    this.classList.remove("fa-eye");
+                    this.classList.add("fa-eye-slash");
+                } else {
+                    inputField.setAttribute("type", "text");
+                    this.classList.remove("fa-eye-slash");
+                    this.classList.add("fa-eye");
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

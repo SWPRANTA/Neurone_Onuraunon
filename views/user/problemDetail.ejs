@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon | <%= problem.title %>
+    </title>
+    <%- include("header") -%>
+
+        <!-- math problem section-->
+        <section id="problemDetail">
+            <div class="row custom-row">
+                <div class="col-md-8 left-column  component mb-4">
+                    <div class="container mt-2">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div id="problem-title">
+                                            <%= problem.title %>
+                                        </div>
+                                        <div id="point">Points: <%= problem.points %>
+                                        </div>
+                                        <hr id="horizontal-rule">
+                                        <div>
+                                            <%= problem.statement %>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                                <tr>
+                                    <td class="d-flex justify-content-between">
+                                        <span class="table-cell-with-input d-flex justify-content-start">
+                                            <button class="btn me-2"><i class="fa fa-lg fa-circle-up up-down"></i>
+                                                Upvote</button>
+                                            <button class="btn me-2"><i class="fa fa-lg fa-circle-down up-down"></i>
+                                                Downvote</button>
+                                        </span>
+                                        <form class="table-cell-with-input d-flex justify-content-end"
+                                            action="/check-answer/<%= problem._id %>" method="POST"
+                                            onsubmit="return handleAnswerSubmit()">
+                                            <input type="text" class="form-control me-2" name="userAnswer"
+                                                placeholder="Your Answer">
+                                            <button type="submit" class="btn btn-custom">SUBMIT</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-4 ms-auto right-column">
+                    <div class="p-3 mb-3 component">
+                        <div class="container mt-2">
+                            <div>
+                                <h1 id="problem-status">Status</h1>
+                            </div>
+                            <hr id="horizontal-rule">
+                        </div>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="d-flex justify-content-between">
+                                        <span class="table-cell-with-input d-flex justify-content-start">
+                                            Tried
+                                        </span>
+                                        <span class="table-cell-with-input d-flex justify-content-end">
+                                            1000
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                                <tr>
+                                    <td class="d-flex justify-content-between">
+                                        <span class="table-cell-with-input d-flex justify-content-start">
+                                            Solved
+                                        </span>
+                                        <span class="table-cell-with-input d-flex justify-content-end">
+                                            1000
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- Pop-up message element -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup" onclick="closePopup()">&times;</span>
+                <div id="popup-message"></div>
+            </div>
+        </div>
+        <script>
+            // Function to open the pop-up and display the message
+            function openPopup(message) {
+                const popup = document.getElementById("popup");
+                const popupMessage = document.getElementById("popup-message");
+                popupMessage.textContent = message;
+                popup.style.display = "block";
+            }
+
+            // Function to close the pop-up
+            function closePopup() {
+                const popup = document.getElementById("popup");
+                popup.style.display = "none";
+            }
+        </script>
+        <script>
+            // Function to handle form submission and display the pop-up message
+            function handleAnswerSubmit() {
+                const form = document.querySelector("form");
+                const userAnswer = form.querySelector("input[name='userAnswer']").value;
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: new URLSearchParams({ userAnswer }),
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === "correct") {
+                            openPopup(data.message);
+                        } else {
+                            openPopup(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error submitting answer:", error);
+                        openPopup("An error occurred while checking the answer.");
+                    });
+
+                return false; // Prevent the form from submitting in the traditional way
+            }
+        </script>
+        <%- include("footer") -%>
