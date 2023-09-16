@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Contest</title>
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+
+        <div class="container mt-5">
+            <div id="table-title">
+                <h1>Challenge your limits: Join the math contest</h1>
+            </div>
+            <hr id="horizontal-rule">
+        </div>
+        <section id="contest">
+            <div class="row custom-row mb-3">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <% contests.forEach(function(contest) { %>
+                        <% if (contest.publish) { %>
+                            <div class="col">
+                                <div class="card h-100 custom-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= contest.title %>
+                                        </h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <%= contest.subtitle %>
+                                        </h6>
+                                        <p class="card-text">
+                                            Start Time: <%= contest.startTime.toString() %><br>
+                                                End Time: <%= contest.endTime %>
+                                        </p>
+                                        <a href="#" class="btn btn-primary">Join Contest</a>
+                                        <a href="#" class="btn btn-secondary">Details</a>
+                                    </div>
+
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% }); %>
+                </div>
+            </div>
+
+        </section>
+
+        <%- include("footer") -%>

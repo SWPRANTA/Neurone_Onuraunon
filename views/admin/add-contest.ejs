@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Add-Contest</title>
+
+    <%- include("admin-header") -%>
+        <section class="add-problem-section">
+            <div class="container">
+                <h3>Add a New Contest</h3>
+                <hr id="horizontal-rule">
+                <form action="/modify-contest/add-contest" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sub-title" class="form-label">SubTitle</label>
+                        <input type="text" class="form-control" id="sub-title" name="sub-title" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="start-time" class="form-label">Starting Time</label>
+                            <input type="datetime-local" class="form-control" id="start-time" name="start-time"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="end-time" class="form-label">Ending Time</label>
+                            <input type="datetime-local" class="form-control" id="end-time" name="end-time" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Publish?</label>
+                            <div>
+                                <label for="publish-yes" class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="publish-yes" name="publish" value="true">
+                                    Yes
+                                </label>
+                            </div>
+                            <div>
+                                <label for="publish-no" class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="publish-no" name="publish" value="false">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h3>Contest Questions</h3>
+                    <hr id="horizontal-rule">
+                    <div id="questions-container"></div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-custom-admin mb-2" id="add-simple-question">Add
+                                Simple
+                                Question</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-custom-admin mb-2" id="add-detailed-question">Add
+                                Detailed
+                                Question</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="question-number" name="questionNumber" value="0">
+                    <button type="submit" id="create-button" class="btn btn-custom-admin mb-5">Create</button>
+
+                </form>
+            </div>
+        </section>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const questionsContainer = document.getElementById("questions-container");
+                const addSimpleQuestionBtn = document.getElementById("add-simple-question");
+                const addDetailedQuestionBtn = document.getElementById("add-detailed-question");
+                const createButton = document.getElementById("create-button");
+                const questionNumber = document.getElementsByName('questionNumber');
+                const detailedQuestions = [];
+
+                let problemsNumber = 1;
+
+
+                function createSimpleQuestion() {
+                    const questionDiv = document.createElement("div");
+                    questionDiv.className = "mb-3 question";
+
+                    const label = document.createElement("label");
+                    label.innerHTML = `Question ${questionNumber}`;
+                    questionDiv.appendChild(label);
+
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.className = "form-control";
+                    input.name = `simple-question-${problemsNumber}`;
+                    questionDiv.appendChild(input);
+
+                    const deleteButton = document.createElement("button");
+                    deleteButton.type = "button";
+                    deleteButton.className = "btn mt-3 mb-3 btn-danger btn-sm";
+                    deleteButton.textContent = "Delete";
+                    deleteButton.addEventListener("click", function () {
+                        questionsContainer.removeChild(questionDiv);
+                    });
+                    questionDiv.appendChild(deleteButton);
+
+                    questionsContainer.appendChild(questionDiv);
+                    problemsNumber++;
+                }
+
+                function createDetailedQuestion() {
+                    const questionDiv = document.createElement("div");
+                    questionDiv.className = "mb-3 question";
+
+                    const label = document.createElement("label");
+                    label.innerHTML = `Question ${problemsNumber}`;
+                    questionDiv.appendChild(label);
+
+                    const titleInput = document.createElement("input");
+                    titleInput.type = "text";
+                    titleInput.name = `detailed-question-title-${problemsNumber}`;
+                    titleInput.className = "form-control mb-2";
+                    titleInput.placeholder = "Title";
+                    questionDiv.appendChild(titleInput);
+
+                    const statementInput = document.createElement("textarea");
+                    statementInput.type = "text";
+                    statementInput.name = `detailed-question-statement-${problemsNumber}`;
+                    statementInput.className = "form-control mb-2";
+                    statementInput.placeholder = "Problem Statement";
+                    questionDiv.appendChild(statementInput);
+
+                    const solutionInput = document.createElement("textarea");
+                    solutionInput.type = "text";
+                    solutionInput.name = `detailed-question-solution-${problemsNumber}`;
+                    solutionInput.className = "form-control mb-2";
+                    solutionInput.placeholder = "Solution";
+                    questionDiv.appendChild(solutionInput);
+
+                    const pointInput = document.createElement("input");
+                    pointInput.type = "number";
+                    pointInput.name = `detailed-question-points-${problemsNumber}`;
+                    pointInput.className = "form-control";
+                    pointInput.placeholder = "Point";
+                    questionDiv.appendChild(pointInput);
+
+                    const deleteButton = document.createElement("button");
+                    deleteButton.type = "button";
+                    deleteButton.className = "btn mt-3 mb-3 btn-danger btn-sm";
+                    deleteButton.textContent = "Delete";
+                    deleteButton.addEventListener("click", function () {
+                        questionsContainer.removeChild(questionDiv);
+                    });
+                    questionDiv.appendChild(deleteButton);
+
+                    questionsContainer.appendChild(questionDiv);
+                    problemsNumber++;
+                }
+
+                addSimpleQuestionBtn.addEventListener("click", createSimpleQuestion);
+                addDetailedQuestionBtn.addEventListener("click", createDetailedQuestion);
+
+                createButton.addEventListener("click", function (event) {
+                    const confirmation = confirm("Are you sure you want to create this contest?");
+                    if (!confirmation) {
+                        event.preventDefault();
+                    }
+                    else {
+                        const problemsNumberInput = document.getElementById("question-number");
+                        problemsNumberInput.value = problemsNumber;
+                    }
+                });
+            });
+        </script>
+        <%- include("../user/footer") -%>

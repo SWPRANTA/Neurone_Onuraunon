@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neurone Onuraunon - Admin Panel</title>
   
-  <%- include("admin-header") -%>
+  <%- include(isAdmin ? "../admin/admin-header" : "header") %>
 
 
   
-  <%- include("footer") -%>
+  <%- include("../user/footer") -%>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neurone Onuraunon | <%= blog.title %>
     </title>
-    <%- include("header") -%>
+    <%- include(isAdmin ? "../admin/admin-header" : "header") %>
 
         <!-- Blog Content section-->
         <section id="blogContent">

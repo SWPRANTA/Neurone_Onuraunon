@@ -5,52 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neurone Onuraunon - Blog</title>
-    <%- include("header") -%>
-        <!-- <section id="blog-content">
-
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="0"
-                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
-
-                <div class="carousel-inner">
-                    <div class="carousel-item active blog-c-item">
-                        <img src="image/08.jpg" class="d-block w-100 blog-c-img" alt="">
-                        <div class="blog-carousel-caption">
-                            <h2 class="fs-10">100+ Members so far</h2>
-                        </div>
-                    </div>
-                    <div class="carousel-item blog-c-item">
-                        <img src="image/12.jpg" class="d-block w-100 blog-c-img" alt="">
-                        <div class="blog-carousel-caption">
-                            <h2>Arranged 3 Mathematics Olympiads</h2>
-                        </div>
-                    </div>
-                    <div class="carousel-item blog-c-item">
-                        <img src="image/24.jpg" class="d-block w-100 blog-c-img" alt="">
-                        <div class="blog-carousel-caption">
-                            <h2>50+ Articles and Discussions</h2>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-
-        </section> -->
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+        <div class="fixed-action-button">
+            <a href="/request-blog" class="add-button btn-floating btn-large blue btn-custom">
+                <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
+            </a>
+        </div>
         <div class="container mt-5">
             <div id="table-title">
                 <h1>The Knowledge Hub: Explore Our Latest Blog Posts</h1>

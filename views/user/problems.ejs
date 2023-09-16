@@ -5,14 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neurone Onuraunon - Practice Problems</title>
-  <%- include("header") -%>
+  <%- include(isAdmin ? "../admin/admin-header" : "header") %>
     <!-- Problems Section -->
-    <div class="fixed-action-button">
-      <a href="/add-problem" class="add-button btn-floating btn-large blue btn-custom-admin">
-          <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
-      </a>
-  </div>
-  
     <section id="problem-set">
       <div class="container mt-5">
         <div id="table-title">

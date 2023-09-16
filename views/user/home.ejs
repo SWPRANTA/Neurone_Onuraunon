@@ -5,69 +5,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neurone Onuraunon - A Comprehensive Platform for Olympiad Aspirants</title>
-    <%- include("header") -%>
-        <section class="body-section" id="body-section">
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="http://localhost:3000/problems">
-                            <img src="/images/Problem Solving Illustration - 3.png" alt="Problem Solving"
-                                class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Problems</button>
-                        </a>
-                    </div>
+    <%- include(isAdmin ? "../admin/admin-header" : "header") %>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html">
-                            <img src="/images/Contest Illustration - 2.png" alt="Monthly Contest"
-                                class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Monthly Contest</button>
-                        </a>
-                    </div>
+                        <section class="body-section" id="body-section">
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="http://localhost:3000/problems">
+                                            <img src="/images/Problem Solving Illustration - 3.png"
+                                                alt="Problem Solving" class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Problems</button>
+                                        </a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html"><img src="/images/Fest.png" alt="Fest"
-                                class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Fest Update</button></a>
-                    </div>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html">
+                                            <img src="/images/Contest Illustration - 2.png" alt="Monthly Contest"
+                                                class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Monthly Contest</button>
+                                        </a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html">
-                            <img src="/images/Leaderboard.png" alt="Leaderboard" class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Leaderboard</button>
-                        </a>
-                    </div>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html"><img src="/images/Fest.png" alt="Fest"
+                                                class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Fest Update</button></a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html">
-                            <img src="/images/Contest Illustration - 1.jpg" alt="Contest"
-                                class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Contest</button>
-                        </a>
-                    </div>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html">
+                                            <img src="/images/Leaderboard.png" alt="Leaderboard"
+                                                class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Leaderboard</button>
+                                        </a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html">
-                            <img src="/images/Event.png" alt="Event" class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Event</button>
-                        </a>
-                    </div>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html">
+                                            <img src="/images/Contest Illustration - 1.jpg" alt="Contest"
+                                                class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Contest</button>
+                                        </a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="http://localhost:3000/blog">
-                            <img src="/images/Blog.png" alt="Blog" class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Blog/Tutorials</button>
-                        </a>
-                    </div>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html">
+                                            <img src="/images/Event.png" alt="Event" class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Event</button>
+                                        </a>
+                                    </div>
 
-                    <div class="col-md-3 mb-4 text-center">
-                        <a href="destination1.html">
-                            <img src="/images/Community.png" alt="Community" class="img-fluid img-responsive">
-                            <button class="btn btn-custom btn-block mt-2">Community</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <%- include("footer") -%>
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="http://localhost:3000/blog">
+                                            <img src="/images/Blog.png" alt="Blog" class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Blog/Tutorials</button>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4 text-center">
+                                        <a href="destination1.html">
+                                            <img src="/images/Community.png" alt="Community"
+                                                class="img-fluid img-responsive">
+                                            <button class="btn btn-custom btn-block mt-2">Community</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <%- include("footer") -%>

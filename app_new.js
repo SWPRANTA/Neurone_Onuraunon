@@ -13,22 +13,22 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-  [
-    "/profile",
-    "/dashboard",
-    "/home",
-    "/problems",
-    "/problemDetail",
-    "/blog",
-    "/monthly-contest",
-    "/leaderboard",
-    "/contest",
-    "/event",
-    "/community",
-  ],
-  requireAuth
-);
+// app.use(
+//   [
+//     "/profile",
+//     "/dashboard",
+//     "/home",
+//     "/problems",
+//     "/problemDetail",
+//     "/blog",
+//     "/monthly-contest",
+//     "/leaderboard",
+//     "/contest",
+//     "/event",
+//     "/community",
+//   ],
+//   requireAuth
+// );
 
 app.use("/", routes);
 

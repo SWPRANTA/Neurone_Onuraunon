@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Update Blog | <%= blog.title %></title>
+    <%- include("admin-header") %>
+    <section class="update-blog-section">
+        <div class="container">
+            <h3 id="update-title">Update Problem</h3>
+            <hr id="horizontal-rule">
+            <form method="POST" action="/update-blog/<%= blog._id %>">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= blog.title %>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" <%= blog.imageUrl %> required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required><%= blog.description %></textarea>
+                </div>
+                <button type="submit" class="btn btn-custom-admin mb-5">Update</button>
+            </form>
+        </div>
+    </section>
+    <%- include("../user/footer") -%>

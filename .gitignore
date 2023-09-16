@@ -1,0 +1,5 @@
+node_modules/
+functionalities/firebase.js
+functionalities/database.js
+app.js
+*.xlsx

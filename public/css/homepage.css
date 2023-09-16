@@ -7,11 +7,14 @@
     font-family: 'Exo', sans-serif;
 
 }
-
+.body-section{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
 
 /* Customize image size */
 .img-fluid {
-    max-width: 15rem;
+    max-width: 10rem;
     /* Adjust the width as needed */
     height: auto;
 }

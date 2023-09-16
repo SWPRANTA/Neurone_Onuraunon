@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Problems</title>
+
+    <%- include("admin-header") -%>
+        <div class="fixed-action-button">
+            <a href="/add-blog" class="add-button btn-floating btn-large blue btn-custom-admin">
+                <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
+            </a>
+        </div>
+
+        <section class="blog-section">
+            <div class="container">
+                <div id="table-title">
+                    <h1>Blogs</h1>
+                </div>
+                <hr id="horizontal-rule">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Last Updated</th>
+                            <!-- <th scope="col">Created by</th> -->
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% blogs.forEach((blog)=>{%>
+                            <tr>
+                                <th scope="row">
+                                    <%= blog._id %>
+                                </th>
+                                <td>
+                                    <%= blog.title %>
+                                </td>
+                                <td>
+                                    <% const firstLineBreakIndex=blog.description.indexOf('\n'); %>
+                                        <%= firstLineBreakIndex !==-1 ? blog.description.substring(0,
+                                            firstLineBreakIndex) + "..." : blog.description.substring(0, 50) + "..." %>
+
+                                </td>
+                                <td>
+                                    <%= blog.date %>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="/update-blog/<%= blog._id %>"><button
+                                                class="btn mb-3 btn-custom-admin"><i class="fa-solid fa-pen-to-square"
+                                                    style="color: #ffffff;"></i></button></a>
+                                        <a><button class="btn mb-3 btn-custom-admin view-blog-details"
+                                        data-blog='<%- JSON.stringify(blog) %>'>
+                                            <i class="fa-solid fa-eye" style="color: #ffffff;"></i>
+                                        </button></a>
+                                        <a href="/delete-blog/<%= blog._id %>"><button
+                                                class="btn mb-0 btn-custom-admin-red"><i class="fa-solid fa-trash"
+                                                    style="color: #ffffff;"></i></button></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-content">
+                <span class="close-sidebar" onclick="closeSidebar()">&times;</span>
+                <h3>Blog Details</h3>
+                <p><strong>ID:</strong> <span id="blog-id"></span></p>
+                <p><strong>Title:</strong> <span id="blog-title"></span></p>
+                <p><strong>Last Updated:</strong> <span id="last-updated"></span></p>
+                <p><strong>Description:</strong> <span id="blog-description"></span></p>
+                
+            </div>
+        </div>
+        <script>
+            function openSidebar(button) {
+                const blogData = JSON.parse(button.getAttribute("data-blog"));
+                document.getElementById("blog-id").textContent = blogData._id;
+                document.getElementById("blog-title").textContent = blogData.title;
+                document.getElementById("blog-description").textContent = blogData.description;
+                document.getElementById("last-updated").textContent = blogData.date;
+                document.getElementById("sidebar").style.width = "40%"; // Adjust the sidebar width as needed
+                // document.body.style.overflow = "hidden"; // Prevent scrolling when sidebar is open
+            }
+        
+            function closeSidebar() {
+                document.getElementById("sidebar").style.width = "0";
+                // document.body.style.overflow = "auto"; // Restore scrolling
+                //document.getElementById("overlay").style.width = "0";
+            }
+        
+            document.querySelectorAll(".view-blog-details").forEach(function(button) {
+                button.addEventListener("click", function() {
+                    openSidebar(button);
+                });
+            });
+        </script>
+        
+                
+
+        <%- include("../user/footer") -%>

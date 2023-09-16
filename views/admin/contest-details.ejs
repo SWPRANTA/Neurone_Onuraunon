@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Contest | Contest Details</title>
+
+    <%- include("admin-header") -%>
+        <h2>Contest ID: <%= contest._id %>
+        </h2>
+        <h4>Contest Title: <%= contest.title %>
+        </h4>
+        <h4>Contest Subtitle: <%= contest.subtitle %>
+        </h4>
+        <h4>Contest Start Time: <%= contest.startTime %>
+        </h4>
+        <h4>Contest End Time: <%= contest.endTime %>
+        </h4>
+        <h4>Last Updated on: <%= contest.createdAt %>
+        </h4>
+        <hr id="horizontal-rule">
+        <section class="contest-section">
+            <div class="container">
+                <div id="table-title">
+                    <h3>Contest Details</h3>
+                </div>
+                <hr id="horizontal-rule">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Problem No</th>
+                            <th scope="col">Problem Title</th>
+                            <th scope="col">Problem Statement</th>
+                            <th scope="col">Solution</th>
+                            <th scope="col">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let questionNo=1 %>
+                            <% problems.forEach((ques)=>{%>
+
+                                <tr>
+                                    <th scope=" row">
+                                        <%= questionNo %>
+                                    </th>
+                                    <td>
+                                        <%= ques.title %>
+                                    </td>
+                                    <td>
+                                        <%= ques.statement %>
+                                    </td>
+                                    <td>
+                                        <%= ques.solution %>
+                                    </td>
+                                    <td>
+                                        <%= ques.points %>
+                                    </td>
+
+
+                                </tr>
+                                <% questionNo++;%>
+                                    <% }); %>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <%- include("../user/footer") -%>

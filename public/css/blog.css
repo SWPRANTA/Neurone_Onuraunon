@@ -1,7 +1,8 @@
 .custom-card-img {
-    width: 70%;
+    width: 60%;
     display: block;
     margin: 0 auto;
+    padding: 5%;
 }
 .custom-card-title{
     font-size: 1.5rem;

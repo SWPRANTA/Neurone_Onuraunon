@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Notifications</title>
+
+    <%- include("admin-header") -%>
+        <section id="notification-center">
+            <div class="container-fluid">
+                <h3>Notification Center</h3>
+                <hr id="horizontal-rule">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-1">Requester</th>
+                                <th class="col-2">Blog Title</th>
+                                <th class="col-7">Description</th>
+                                <th class="col-1">Status</th>
+                                <th class="col-1">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% notifications.forEach(notification=> { %>
+                                <tr>
+                                    <td>
+                                        <%= notification.requesterUserId %>
+                                    </td>
+                                    <td>
+                                        <%= notification.blogTitle %>
+                                    </td>
+                                    <td>
+                                        <%= notification.description %>
+                                    </td>
+                                    <td>
+                                        <%= notification.status %>
+                                    </td>
+                                    <td>
+                                        <% if (notification.status==='pending' ) { %>
+                                            <form action="/admin-notification/<%= notification._id %>" method="post">
+                                                <input type="hidden" name="action" value="accept">
+                                                <button type="submit" class="btn mb-3 btn-custom-admin"><i
+                                                        class="fa-solid fa-circle-check"
+                                                        style="color: #ffffff;"></i></button>
+                                            </form>
+                                            <form action="/admin-notification/<%= notification._id %>" method="post">
+                                                <input type="hidden" name="action" value="reject">
+                                                <button type="submit" class="btn mb-3 btn-custom-admin"><i
+                                                        class="fa-solid fa-ban" style="color: #ffffff;"></i></button>
+                                            </form>
+                                            <% } %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <%- include("../user/footer") -%>

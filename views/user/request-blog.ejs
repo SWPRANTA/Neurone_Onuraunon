@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Users | Blogs</title>
+
+    <%- include("header") -%>
+        <section class="add-problem-section">
+            <div class="container">
+                <h3>Let Your Mathematical Genius Shine: Share Your Insights in Our Blog!</h3>
+                <hr id="horizontal-rule">
+                <form action="/request-blog" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-custom-admin mb-5">Request to Create Blog</button>
+                </form>
+            </div>
+        </section>
+        <%- include("footer") -%>

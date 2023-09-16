@@ -2,16 +2,19 @@
 const mongoose = require("mongoose");
 
 const problemSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  statement: { type: String, required: true },
-  solution: { type: String, required: true },
-  points: { type: Number, required: true },
+  title: {type: String, required: true},
+  statement: {type: String, required: true},
+  solution: {type: String, required: true},
+  points: {type: Number, required: true},
+  solved_count: {type: Number, default: 0},
+  attempt: {type: Number, default: 0}
 });
 
 const Problem = mongoose.model("Problem", problemSchema);
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  role:{type: String, required: true},
   email: { type: String, required: true },
   password: { type: String, required: true },
   problemsSolved: { type: Number, default: 0 },
@@ -30,8 +33,41 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model("Blog", blogSchema);
 
+const notificationSchema = new mongoose.Schema({
+  // requesterUserId: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     required: true,
+  //     ref: 'User', // Assuming you have a User model
+  // },
+  // adminUserId: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'User',
+  // },
+  blogTitle: {type: String, required: true,},
+  description: {type: String, required: true,},
+  imageUrl: {type: String,},
+  status: {type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending',},
+  createdAt: {type: Date, required: true}
+});
+
+const Notification = mongoose.model('Notification', notificationSchema);
+
+const contestSchema = new mongoose.Schema({
+  title: {type: String, required: true},
+  subtitle: {type: String, required: true},
+  startTime: {type: Date, required: true},
+  endTime: {type: Date, required: true },
+  questions: [{type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true}],
+  createdAt: {type: Date, required: true},
+  publish: {type: Boolean, required: true}
+});
+
+const Contest = mongoose.model("Contest", contestSchema);
+
 module.exports = {
   Problem,
   User,
   Blog,
+  Notification,
+  Contest
 };

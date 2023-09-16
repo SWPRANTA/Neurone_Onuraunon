@@ -1,9 +1,9 @@
 .action-buttons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
 }
 
 .btn-custom-admin {
@@ -19,14 +19,28 @@
     transform: translateY(-2px) translateX(2px);
 }
 
-.problems-section{
+.btn-custom-admin-red {
+    background: linear-gradient(109.6deg,  #e52d27 0%, #b31217  51%, #e52d27  98.6%);
+    color: #fff;
+    width: 100%;
     font-family: 'Exo', sans-serif;
 }
-th{
+
+.btn-custom-admin-red:hover {
+    background: linear-gradient(112.1deg, #e33a35 0%, #8d0005  51%70.2%);
+    color: #fff;
+    transform: translateY(-2px) translateX(2px);
+}
+
+.problems-section, .blog-section, .contest-section {
+    font-family: 'Exo', sans-serif;
+}
+
+th {
     text-align: center;
 }
 
-.add-button{
+.add-button {
     width: 80px;
     height: 80px;
     display: flex;
@@ -41,10 +55,54 @@ th{
     bottom: 20px;
 }
 
-.update-problem-section{
+.update-problem-section, .update-blog-section {
     font-family: 'Exo', sans-serif;
     font-weight: 500;
 }
-#update-title{
+
+#update-title {
     text-align: center;
 }
+
+#notification-center {
+    min-height: 75vh;
+    text-align: center;
+    font-family: 'Exo', sans-serif;
+
+}
+
+.add-problem-section {
+    font-family: 'Exo', sans-serif;
+}
+
+.add-problem-section h3 {
+    text-align: center;
+
+}
+
+/* Sidebar Styles */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f0f0f0;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.sidebar-content {
+    padding: 20px;
+}
+
+.close-sidebar {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+

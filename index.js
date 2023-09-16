@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
+const http = require("http")
 const xlsx = require('xlsx');
-
+const link = "mongodb+srv://SWPRANTA04:EqsU4PgVzCx2CrRX@neurone-onuraunon.4oqzaaj.mongodb.net/?retryWrites=true&w=majority"
 mongoose
-    .connect("mongodb://127.0.0.1:27017/neurone_onuraunon", { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("mongoose started");
-
-        // Drop the entire database
-        return mongoose.connection.db.dropDatabase();
-    })
+    .connect(link, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Database dropped");
 
@@ -116,6 +111,10 @@ mongoose
     .then(() => {
         const userSchema = new mongoose.Schema({
             name: {
+                type: String,
+                required: true
+            },
+            role:{
                 type: String,
                 required: true
             },

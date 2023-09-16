@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Admin Panel | Contest</title>
+
+    <%- include("admin-header") -%>
+        <div class="fixed-action-button">
+            <a href="/modify-contest/add-contest" class="add-button btn-floating btn-large blue btn-custom-admin">
+                <i class="fa-solid fa-plus " style="color: #ffffff;"></i>
+            </a>
+        </div>
+
+        <section class="contest-section">
+            <div class="container">
+                <div id="table-title">
+                    <h1>Contests</h1>
+                </div>
+                <hr id="horizontal-rule">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subtitle</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Last Updated</th>
+                            <th scope="col">Published</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% contests.forEach((contest)=>{%>
+                            <tr>
+                                <th scope="row">
+                                    <%= contest._id %>
+                                </th>
+                                <td>
+                                    <%= contest.title %>
+                                </td>
+                                <td>
+                                    <%= contest.subtitle %>
+                                </td>
+                                <td>
+                                    <%= contest.startTime %>
+                                </td>
+                                <td>
+                                    <%= contest.endTime %>
+                                </td>
+
+                                <td>
+                                    <%= contest.createdAt %>
+                                </td>
+
+                                <td>
+                                    <%= contest.publish %>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="/modify-contest/contests/update-contest/<%= contest._id %>"><button
+                                                class="btn mb-3 btn-custom-admin"><i class="fa-solid fa-pen-to-square"
+                                                    style="color: #ffffff;"></i></button></a>
+
+                                        <a href="/modify-contest/contests/preview-contest/<%= contest._id %>"><button
+                                                class="btn mb-3 btn-custom-admin"><i class="fa-solid fa-eye"
+                                                    style="color: #ffffff;"></i></button></a>
+
+                                        <a href="/modify-contest/contests/contest-leaderboard/<%= contest._id %>"><button
+                                                class="btn mb-3 btn-custom-admin"><i class="fa-solid fa-ranking-star"
+                                                    style="color: #ffffff;"></i></button></a>
+
+                                        <a href="/modify-contest/contests/delete-contest/<%= contest._id %>"><button
+                                                class="btn mb-0 btn-custom-admin-red"><i class="fa-solid fa-trash"
+                                                    style="color: #ffffff;"></i></button></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}); %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <%- include("../user/footer") -%>
