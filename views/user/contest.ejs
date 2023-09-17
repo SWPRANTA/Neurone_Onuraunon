@@ -7,6 +7,46 @@
     <title>Neurone Onuraunon - Contest</title>
     <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
 
+
+    <% function calculateTimeRemainingOrPassed(contest) {
+        const currentTime = new Date();
+        const startTime = new Date(contest.startTime);
+        const endTime = new Date(contest.endTime);
+    
+        if (currentTime < startTime) {
+            // Contest is upcoming
+            const timeDiff = startTime - currentTime;
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    
+            return `Starts in ${days} days, ${hours} hours, ${minutes} minutes`;
+        } else if (currentTime > endTime) {
+            // Contest has finished
+            const timeDiff = currentTime - endTime;
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const weeks = Math.floor(days / 7);
+            const months = Math.floor(weeks / 4);
+            const years = Math.floor(months / 12);
+    
+            if (years > 0) {
+                return `${years} year(s) ago`;
+            } else if (months > 0) {
+                return `${months} month(s) ago`;
+            } else if (weeks > 0) {
+                return `${weeks} week(s) ago`;
+            } else if (days > 0) {
+                return `${days} day(s) ago`;
+            } else {
+                return 'Contest has finished';
+            }
+        } else {
+            // Contest is ongoing
+            return 'Contest is ongoing';
+        }
+    } %>
+
+
         <div class="container mt-5">
             <div id="table-title">
                 <h1>Challenge your limits: Join the math contest</h1>
@@ -28,11 +68,24 @@
                                             <%= contest.subtitle %>
                                         </h6>
                                         <p class="card-text">
-                                            Start Time: <%= contest.startTime.toString() %><br>
-                                                End Time: <%= contest.endTime %>
+                                            Status: <%= contest.status %><br>
+                                            <%= calculateTimeRemainingOrPassed(contest) %>
                                         </p>
-                                        <a href="#" class="btn btn-primary">Join Contest</a>
-                                        <a href="#" class="btn btn-secondary">Details</a>
+                                        <div class="card-footer">
+                                            <form method="POST" action="/contests/contest-details/<%= contest._id %>">
+                                                <button type="submit" class="btn btn-primary">Visit Contest</button>
+                                                
+                                            </form>
+                                            <form method="POST" action="/contests/join-contest/<%= contest._id %>">
+                                                <button type="submit" class="btn btn-secondary">Details</button>
+                                                
+                                            </form>
+                                        </div>
+                                        
+
+                                        
+                                        <!-- <a href="#" class="btn btn-primary">Join Contest</a> -->
+                                        <!-- <a href="#" class="btn btn-secondary">Details</a> -->
                                     </div>
 
                                     <% } %>

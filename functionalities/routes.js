@@ -426,7 +426,9 @@ router.post("/admin-notification/:id", isAuthenticated, async (req, res) => {
 //Problem section
 router.get("/problems", isAuthenticated, async (req, res) => {
     const isAdmin = req.session.user && req.session.user.role === "admin";
+   
     try {
+        const users = await User.find().sort({ totalPoints: -1 });
         const page = req.query.page || 1;
         const problemsPerPage = 15;
         const skip = (page - 1) * problemsPerPage;
@@ -443,10 +445,10 @@ router.get("/problems", isAuthenticated, async (req, res) => {
 
         const totalPages = Math.ceil(totalProblems / problemsPerPage);
 
-        res.render("user/problems", { problems, page, totalPages, keyword, isAdmin });
+        res.render("user/problems", { problems, page, totalPages, keyword, isAdmin, users });
     } catch (error) {
         console.error("Error fetching problems:", error);
-        res.render("user/problems", { problems: [], page: 1, totalPages: 1, keyword: '', isAdmin });
+        res.render("user/problems", { problems: [], page: 1, totalPages: 1, keyword: '', isAdmin, users });
     }
 });
 
@@ -475,12 +477,18 @@ router.post("/check-answer/:id", isAuthenticated, async (req, res) => {
     const problemId = req.params.id;
     const userAnswer = req.body.userAnswer;
     const isAdmin = req.session.user && req.session.user.role === "admin";
+    const sessionuser = req.session.user;
 
     try {
         const problem = await Problem.findById(problemId);
+        const user = await User.findOne({email: sessionuser.email});
+        console.log(user);
         if (problem) {
             const correctAnswer = problem.solution;
             if (userAnswer === correctAnswer) {
+                user.problemsSolved = user.problemsSolved + 1;
+                user.totalPoints = user.totalPoints + problem.points;
+                await user.save();
                 res.json({ result: "correct", message: "Correct answer! Well done!" });
             } else {
                 res.json({ result: "incorrect", message: "Incorrect answer. Please try again." });
@@ -823,5 +831,21 @@ router.get("/contests", isAuthenticated, async (req, res) => {
         res.status(500).send("An error occurred");
     }
 });
+router.post("/contests/contest-details/:contestId", async (req, res) => {
+    const contestId = req.params.contestId;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+    try {
+        const contest = await Contest.findById(contestId);
+
+        if (!contest) {
+            return res.status(404).send("Contest not found");
+        }
+        res.render("user/contest-details", { contest, isAdmin });
+    } catch (error) {
+        console.error("Error fetching contest details:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
 
 module.exports = router;

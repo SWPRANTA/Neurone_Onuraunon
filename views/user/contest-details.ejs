@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Contest| <%= contest._id %></title>
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+
+     <!-- Countdown clock placeholder with CSS styles -->
+    <div id="countdown-clock" class="countdown">
+        <div class="countdown-item" id="days-item">
+            <div class="flip">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <span class="countdown-value" id="days"></span>
+                        <span class="countdown-label">days</span>
+                    </div>
+                    <div class="flip-back">
+                        <span class="countdown-value" id="new-days"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-item" id="hours-item">
+            <div class="flip">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <span class="countdown-value" id="hours"></span>
+                        <span class="countdown-label">hours</span>
+                    </div>
+                    <div class="flip-back">
+                        <span class="countdown-value" id="new-hours"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-item" id="minutes-item">
+            <div class="flip">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <span class="countdown-value" id="minutes"></span>
+                        <span class="countdown-label">minutes</span>
+                    </div>
+                    <div class="flip-back">
+                        <span class="countdown-value" id="new-minutes"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="countdown-item" id="seconds-item">
+            <div class="flip">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <span class="countdown-value" id="seconds"></span>
+                        <span class="countdown-label">seconds</span>
+                    </div>
+                    <div class="flip-back">
+                        <span class="countdown-value" id="new-seconds"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        // Get the contest start time from the server-side data (assuming it's in ISO format)
+        const contestStartTime = new Date("<%= contest.startTime %>");
+
+        // Function to update the countdown
+        function updateCountdown() {
+            const now = new Date();
+            const timeRemaining = contestStartTime - now;
+
+            if (timeRemaining <= 0) {
+                // Contest has started or ended
+                document.getElementById("countdown-clock").innerHTML = "Contest has started or ended.";
+            } else {
+                // Calculate days, hours, minutes, and seconds
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                // Display the countdown with flipping animation
+                updateFlip("days", days);
+                updateFlip("hours", hours);
+                updateFlip("minutes", minutes);
+                updateFlip("seconds", seconds);
+            }
+        }
+
+        function updateFlip(elementId, value) {
+            const element = document.getElementById(elementId);
+            const newElement = document.getElementById(`new-${elementId}`);
+
+            if (element && newElement) {
+                newElement.textContent = value;
+                // element.style.transform = "rotateY(180deg)";
+                // newElement.style.transform = "rotateY(0deg)";
+                setTimeout(() => {
+                    element.textContent = value;
+                    element.style.transform = "rotateY(0deg)";
+                    newElement.style.transform = "rotateY(180deg)";
+                }, 500);
+            }
+        }
+
+        // Update the countdown every second
+        setInterval(updateCountdown, 1000);
+
+        // Initial update
+        updateCountdown();
+    </script>
+        <%- include("footer") -%>

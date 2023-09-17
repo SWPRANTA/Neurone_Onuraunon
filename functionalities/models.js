@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   problemsSolved: { type: Number, default: 0 },
   contestsJoined: { type: Number, default: 0 },
+  totalPoints: {type: Number, default: 0},
   imageLink: { type: String, default: "" },
 });
 
@@ -53,14 +54,31 @@ const notificationSchema = new mongoose.Schema({
 const Notification = mongoose.model('Notification', notificationSchema);
 
 const contestSchema = new mongoose.Schema({
-  title: {type: String, required: true},
-  subtitle: {type: String, required: true},
-  startTime: {type: Date, required: true},
-  endTime: {type: Date, required: true },
-  questions: [{type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true}],
-  createdAt: {type: Date, required: true},
-  publish: {type: Boolean, required: true}
+  title: { type: String, required: true },
+  subtitle: { type: String, required: true },
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
+  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true }],
+  createdAt: { type: Date, required: true },
+  publish: { type: Boolean, required: true }
 });
+
+// Define a virtual field to determine contest status
+contestSchema.virtual('status').get(function () {
+  const now = new Date();
+  if (now < this.startTime) {
+    return 'Upcoming';
+  } else if (now >= this.startTime && now <= this.endTime) {
+    return 'Running';
+  } else {
+    return 'Finished';
+  }
+});
+
+// Apply the virtual field to the schema
+contestSchema.set('toObject', { virtuals: true });
+contestSchema.set('toJSON', { virtuals: true });
+
 
 const Contest = mongoose.model("Contest", contestSchema);
 

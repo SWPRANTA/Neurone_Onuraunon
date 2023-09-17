@@ -85,6 +85,37 @@
 
             <table class="table">
               <tbody>
+                <% users.forEach((user, index) => { %>
+                  <tr class="link-cell" onclick="window.location.href='<%= user._id %>';">
+                    <td>
+                      <div>#<%= index + 1 %></div>
+                    </td>
+                    <td>
+                      <div><%= user.name %></div>
+                    </td>
+                    <td>
+                      <div><%= user.totalPoints %></div>
+                    </td>
+                  </tr>
+                  <tr class="spacer"></tr>
+                <% }); %>
+                <tr class="link-cell" onclick="window.location.href='link5.html';">
+                  <td>
+                    <div></div>
+                  </td>
+                  <td>
+                    <div id="see">See all</div>
+                  </td>
+                  <td>
+                    <div></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            
+            <!-- <table class="table">
+              <tbody>
                 <tr class="link-cell" onclick="window.location.href='link1.html';">
                   <td>
                     <div>#1</div>
@@ -217,7 +248,7 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
           </div>
         </div>
 
