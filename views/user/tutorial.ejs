@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neurone Onuraunon - Practice Problems</title>
+  <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+    <!-- Problems Section -->
+    <section id="problem-set">
+      <div class="container mt-5">
+        <div id="table-title">
+          <h1>Mastering Math Made Simple: Tune in to Tutorials!</h1>
+        </div>
+        <hr id="horizontal-rule">
+      </div>
+
+      <div class="row custom-row">
+        <div class="col-md-7 left-column">
+          <div class="container mt-2" style="display: flex; align-items: center; justify-content: center;">
+            <div id="video-container">
+              <!-- <img src="/image/tutorial-default.png" alt="" srcset="" style="max-width: 60%; height: auto;"> -->
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-5 mt-2 ms-auto right-column">
+          <div class="p-2 mb-1 component">
+            <div class="container mt-2">
+              <div>
+                <h1 id="top-chart">Playlists</h1>
+              </div>
+              <hr id="horizontal-rule">
+
+
+              <div class="scrollable-accordion">
+                <div class="accordion" id="accordionExample">
+                  <% for (let i=0; i < playlists.length; i++) { %>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed playlist-name" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapse<%= i %>" aria-expanded="false"
+                          aria-controls="collapse<%= i %>">
+                          <%= playlists[i].name %>
+                        </button>
+                      </h2>
+                      <div id="collapse<%= i %>" class="accordion-collapse collapse "
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body videos-title">
+                          <div class="row">
+                            <% for (const video of playlists[i].videos) { %>
+                              <div class="video" data-video-id="<%= video.videoId%>">
+                                <img src="<%= video.thumbnail %>" alt="<%= video.title %>" class="img-thumbnail">
+                                <p>
+                                  <%= video.title %>
+                                </p>
+                              </div>
+                              <% } %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function loadVideo(videoId) {
+        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        const iframe = document.createElement("iframe");
+        iframe.src = embedUrl;
+        iframe.setAttribute("allowfullscreen", "true");
+        iframe.width = "640";
+        iframe.height = "360";
+        const videoContainer = document.getElementById("video-container");
+        // const videoContainerImage = videoContainer.querySelector("img");
+        // if (videoImage) {
+        //   videoImage.remove();
+        // }
+        videoContainer.innerHTML = "";
+        videoContainer.appendChild(iframe);
+      }
+      const videoThumbnails = document.querySelectorAll(".video");
+      videoThumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+          const videoId = thumbnail.getAttribute("data-video-id");
+          loadVideo(videoId);
+        });
+      });
+    </script>
+
+    <%- include("footer") -%>

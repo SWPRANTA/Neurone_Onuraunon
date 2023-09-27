@@ -1,0 +1,25 @@
+#problem-set{
+    min-height: 60vh;
+}
+
+.scrollable-accordion {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+.video{
+    margin-bottom: 20px;
+} 
+.video:hover{
+    cursor: pointer;
+}
+
+
+.playlist-name{
+    font-family: 'Exo', sans-serif;
+    font-weight: 700;
+}
+
+.videos-title{
+    font-family: 'Exo', sans-serif;
+    font-weight: 400;
+}

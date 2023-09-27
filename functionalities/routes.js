@@ -2,12 +2,15 @@ const express = require("express");
 const session = require("express-session");
 const authMiddleware = require("./authMiddleware");
 const auth = require("./firebase");
+require('dotenv').config();
 const crypto = require("crypto");
 const { Problem, User, Blog, Notification, Contest } = require("./models");
 const { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { log } = require("console");
+const https = require("https");
+
 
 const generateSecretKey = () => {
     const secretLength = 64; // You can adjust the length as needed
@@ -46,47 +49,6 @@ router.get("/login", function (req, res) {
     res.render("login", { errorMessage: null });
 });
 
-// router.post("/login", async (req, res) => {
-//     const email = req.body.email;
-//     const password = req.body.password;
-
-//     try {
-//         const user = await User.findOne({ email });
-//         if (!user) {
-//             return res.render("login", { errorMessage: "Invalid email or password." });
-//         }
-//         if (user.role === "admin") {
-//             if (password === user.password) {
-//                 isAdmin = true;
-//                 console.log("Admin user logged in:", user.email);
-//                 res.redirect("/home");
-//             } else {
-//                 console.error("Login error: Invalid email or password.");
-//                 res.render("login", { errorMessage: "Invalid email or password." });
-//             }
-//         } else if (user.role === "user") {
-//             signInWithEmailAndPassword(auth, email, password)
-//                 .then((userCredential) => {
-//                     isAdmin = false;
-//                     const user = userCredential.user;
-//                     console.log("User logged in:", user.email);
-//                     res.redirect("/home");
-//                 })
-//                 .catch((error) => {
-//                     const errorCode = error.code;
-//                     const errorMessage = error.message;
-//                     console.error("Login error:", errorCode, errorMessage);
-//                     res.render("login", { errorMessage: "Invalid email or password." });
-//                 });
-//         } else {
-//             console.error("Login error: Invalid role.");
-//             res.render("login", { errorMessage: "Invalid email or password." });
-//         }
-//     } catch (error) {
-//         console.error("Login error:", error);
-//         res.render("login", { errorMessage: "An error occurred during login." });
-//     }
-// });
 
 router.post("/login", async (req, res) => {
     const email = req.body.email;
@@ -482,17 +444,19 @@ router.post("/check-answer/:id", isAuthenticated, async (req, res) => {
     try {
         const problem = await Problem.findById(problemId);
         const user = await User.findOne({email: sessionuser.email});
-        console.log(user);
         if (problem) {
             const correctAnswer = problem.solution;
             if (userAnswer === correctAnswer) {
                 user.problemsSolved = user.problemsSolved + 1;
                 user.totalPoints = user.totalPoints + problem.points;
-                await user.save();
+                
                 res.json({ result: "correct", message: "Correct answer! Well done!" });
             } else {
+
                 res.json({ result: "incorrect", message: "Incorrect answer. Please try again." });
             }
+            user.problemAttempted = user.problemAttempted + 1;
+            await user.save();
         } else {
             res.status(404).send("Problem not found");
         }
@@ -831,7 +795,7 @@ router.get("/contests", isAuthenticated, async (req, res) => {
         res.status(500).send("An error occurred");
     }
 });
-router.post("/contests/contest-details/:contestId", async (req, res) => {
+router.get("/contests/contest-details/:contestId", async (req, res) => {
     const contestId = req.params.contestId;
     const isAdmin = req.session.user && req.session.user.role === "admin";
     try {
@@ -846,6 +810,82 @@ router.post("/contests/contest-details/:contestId", async (req, res) => {
         res.status(500).send("An error occurred");
     }
 });
+
+
+// Tutorials Section
+router.get("/tutorial", async (req, res) => {
+    try {
+      const isAdmin = req.session.user && req.session.user.role === "admin";
+      const apiKey = process.env.youtube_api;
+      const playlistIds = ['PL23jFe15jxQdCeYWn52pD-gd1goyjKwtW', 'PL03IPd8drN_h5Dw_ovgOQcJ8J0m4m4cFC', 'PL03IPd8drN_hs22sX096hMKV6G_QzXjpy', 'PL03IPd8drN_hOOOtCIfvRa51b11BWnGw3', 'PLkxUHWNJNmL_2j7k8Jsu42mCQMvp6mbpg']; // Add more playlist IDs as needed
+      const playlists = [];
+
+      const fetchPlaylistData = (playlistId) => {
+          const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}`;
+          const request = https.get(url, (response) => {
+              let data = '';
+
+              response.on('data', (chunk) => {
+                  data += chunk;
+              });
+
+              response.on('end', () => {
+                  if (response.statusCode === 200) {
+                      try {
+                          const playlistData = JSON.parse(data);
+                          const videos = playlistData.items.map((item) => ({
+                              title: item.snippet.title,
+                              thumbnail: item.snippet.thumbnails.default.url,
+                              videoId: item.snippet.resourceId.videoId,
+                          }));
+                          playlists.push({
+                              name: playlistData.items[0].snippet.title,
+                              videos,
+                          });
+
+                          if (playlists.length === playlistIds.length) {
+                              res.render('user/tutorial', { isAdmin, playlists });
+                          }
+                      } catch (error) {
+                          console.error('Error parsing YouTube API response:', error);
+                          res.status(500).send('Internal Server Error');
+                      }
+                  } else {
+                      console.error(`YouTube API returned an error for playlist ${playlistId}: ${response.statusCode}`);
+                  }
+              });
+          });
+
+          request.on('error', (error) => {
+              console.error('Error fetching YouTube data:', error);
+              res.status(500).send('Internal Server Error');
+          });
+
+          request.end();
+      };
+
+      for (const playlistId of playlistIds) {
+          fetchPlaylistData(playlistId);
+      }
+  } catch (error) {
+      console.error('Error fetching YouTube data:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
+
+//Leaderboard section
+router.get("/leaderboard", async (req, res)=>{
+    try{
+        const isAdmin = req.session.user && req.session.user.role === "admin";
+        const users = await User.find().sort({ totalPoints: -1 });
+        res.render("user/leaderboard", {isAdmin, users});
+    }catch(error){
+        console.log("Error on rendering leaderboard: ", error);
+    }
+    
+});
+
 
 
 module.exports = router;

@@ -1,58 +1,166 @@
-.countdown {
+#view-contest {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+}
+
+.overlay-container {
     font-family: 'Exo', sans-serif;
-    font-size: 300;
-    font-weight: bold;
-    color: #333;
-    background-color: #f0f0f0;
-    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(40%);
+    width: 90%;
+    height: 50%;
+    background: rgba(253, 253, 253, 0.3);
+    box-shadow: 0 4px 15px 0 rgba(243, 243, 243, 0.37);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 104, 250, 0.18);
+    border-radius: 10px;
+}
+#starting{
+    top: 10%;
+    font-size: larger;
+    position: absolute;
+    margin-left: 160px;
+}
+
+#finished-ongoing{
+    position: absolute;
+    top: 30%;
+    right: 14.5%;
+    font-family: 'Exo', sans-serif;
+    font-weight: 400;
+    font-size: medium;
+    background: rgba(31, 38, 135, 1);
+    color: white;
     border-radius: 5px;
+    padding: 10px;
+    /* transform: translateY(-50%); */
+}
+#countdown-clock {
+    
+    font-weight: 300;
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    text-align: center;
 }
 
 .countdown-item {
-    margin: 0 10px;
+    margin: 0 2px;
 }
 
 .flip {
-    perspective: 1000px;
-    width: 100px;
-    height: 100px;
+    perspective: 100px;
+    width: 70px;
+    height: 70px;
     display: inline-block;
 }
 
-.flip-inner {
+
+.flip-front {
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-}
-
-.flip:hover .flip-inner {
-    transform: rotateY(180deg);
-}
-
-.flip-front,
-.flip-back {
-    width: 100%;
-    height: 100%;
+    font-size: smaller;
     position: absolute;
     backface-visibility: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.flip-front {
     background-color: #333;
     color: #fff;
     border-radius: 5px;
 }
 
-.flip-back {
-    background-color: #f0f0f0;
-    color: #333;
+
+#contest-user {
+    min-height: 80vh;
+}
+
+
+.view-contest-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+#image-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+
+
+.overlay-button {
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
+    color: #fff;
+    font-family: 'Exo', sans-serif;
+    font-weight: 900;
+    border-radius: 0.8rem;
+    position: absolute;
+    width: 150px;
+    left: 30px;
+    transform: translateY(-50%);
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
     border-radius: 5px;
-    transform: rotateY(180deg);
+    cursor: pointer;
+}
+.overlay-button:hover {
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: #fff;
+    text-decoration: none;
+}
+.button-register{
+    top: 30%;
+}
+.button-invite{
+    top: 70%;
+}
+
+.title-subtitle.row.col{
+    font-family: 'Exo', sans-serif;
+    font-weight: 900;
+    border-radius: 0.8rem;
+    position: absolute;
+    margin: 30%;
+
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 16px;
+}
+#rules-regulations {
+    margin: 80px 20px;
+    position: relative;
+}
+
+.custom-row-contest {
+    width: 90%;
+    margin: 20px auto;
+    border-radius: 5px;
+    padding: 10px;
+    background: rgba(95, 116, 201, 0.3);
+    box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(2.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+#name-time {
+    width: 100%;
+    font-family: 'Exo', sans-serif;
 }

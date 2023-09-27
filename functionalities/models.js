@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   problemsSolved: { type: Number, default: 0 },
+  problemAttempted: {type: Number, default: 0},
   contestsJoined: { type: Number, default: 0 },
   totalPoints: {type: Number, default: 0},
   imageLink: { type: String, default: "" },

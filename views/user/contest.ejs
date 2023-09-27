@@ -49,11 +49,11 @@
 
         <div class="container mt-5">
             <div id="table-title">
-                <h1>Challenge your limits: Join the math contest</h1>
+                <h1>Contest Central: Where Challenges Become Triumphs!</h1>
             </div>
             <hr id="horizontal-rule">
         </div>
-        <section id="contest">
+        <section id="contest-user">
             <div class="row custom-row mb-3">
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <% contests.forEach(function(contest) { %>
@@ -72,20 +72,10 @@
                                             <%= calculateTimeRemainingOrPassed(contest) %>
                                         </p>
                                         <div class="card-footer">
-                                            <form method="POST" action="/contests/contest-details/<%= contest._id %>">
-                                                <button type="submit" class="btn btn-primary">Visit Contest</button>
-                                                
-                                            </form>
-                                            <form method="POST" action="/contests/join-contest/<%= contest._id %>">
-                                                <button type="submit" class="btn btn-secondary">Details</button>
-                                                
-                                            </form>
-                                        </div>
-                                        
-
-                                        
-                                        <!-- <a href="#" class="btn btn-primary">Join Contest</a> -->
-                                        <!-- <a href="#" class="btn btn-secondary">Details</a> -->
+                                            <a href="/contests/contest-details/<%= contest._id %>" class="btn btn-primary">View Contest</a>
+                                            <a href="/contests/contest-details/<%= contest._id %>" class="btn btn-secondary">Details</a>
+                                            
+                                        </div>           
                                     </div>
 
                                     <% } %>

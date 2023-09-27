@@ -4,113 +4,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurone Onuraunon - Contest| <%= contest._id %></title>
+    <title>Neurone Onuraunon - Contest| <%= contest._id %>
+    </title>
     <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
 
-     <!-- Countdown clock placeholder with CSS styles -->
-    <div id="countdown-clock" class="countdown">
-        <div class="countdown-item" id="days-item">
-            <div class="flip">
-                <div class="flip-inner">
-                    <div class="flip-front">
-                        <span class="countdown-value" id="days"></span>
-                        <span class="countdown-label">days</span>
-                    </div>
-                    <div class="flip-back">
-                        <span class="countdown-value" id="new-days"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="countdown-item" id="hours-item">
-            <div class="flip">
-                <div class="flip-inner">
-                    <div class="flip-front">
-                        <span class="countdown-value" id="hours"></span>
-                        <span class="countdown-label">hours</span>
-                    </div>
-                    <div class="flip-back">
-                        <span class="countdown-value" id="new-hours"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="countdown-item" id="minutes-item">
-            <div class="flip">
-                <div class="flip-inner">
-                    <div class="flip-front">
-                        <span class="countdown-value" id="minutes"></span>
-                        <span class="countdown-label">minutes</span>
-                    </div>
-                    <div class="flip-back">
-                        <span class="countdown-value" id="new-minutes"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="countdown-item" id="seconds-item">
-            <div class="flip">
-                <div class="flip-inner">
-                    <div class="flip-front">
-                        <span class="countdown-value" id="seconds"></span>
-                        <span class="countdown-label">seconds</span>
-                    </div>
-                    <div class="flip-back">
-                        <span class="countdown-value" id="new-seconds"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    <script>
-        // Get the contest start time from the server-side data (assuming it's in ISO format)
-        const contestStartTime = new Date("<%= contest.startTime %>");
+        <section id="view-contest">
+            <div id="image-container">
+                <img src="/image/Rope_pulling.jpg" class="view-contest-img" srcset="">
 
-        // Function to update the countdown
-        function updateCountdown() {
-            const now = new Date();
-            const timeRemaining = contestStartTime - now;
+                <div class="row">
+                    <div class="col">
+                        <div class="overlay-container">
+                            <div class="row">
+                                <div class="col-2">
+                                    <button class="btn overlay-button button-register" id="button-register">
+                                        <% if (contest.status === "Upcoming" || "Ongoing") { %>
+                                            Register <i class="fa-solid fa-arrow-right-to-bracket"
+                                            style="color: #ffffff;"></i>
+                                          <% } else if (contest.status === "Finished") { %>
+                                            Leaderboard
+                                          <% } %>
+                                        </button>
+                                    <button class="btn overlay-button button-invite" id="button-invite">Invite <i
+                                            class="fa-solid fa-paper-plane" style="color: #ffffff;"></i></button>
+                                </div>
 
-            if (timeRemaining <= 0) {
-                // Contest has started or ended
-                document.getElementById("countdown-clock").innerHTML = "Contest has started or ended.";
-            } else {
-                // Calculate days, hours, minutes, and seconds
-                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                                <div class="col-5">
+                                    <div class="title-subtitle">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h2>
+                                                    <%= contest.title %>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h3>
+                                                    <%= contest.subtitle %>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                // Display the countdown with flipping animation
-                updateFlip("days", days);
-                updateFlip("hours", hours);
-                updateFlip("minutes", minutes);
-                updateFlip("seconds", seconds);
+                                <div class="col-5">
+                                    <div class="row">
+                                        <div class="col" id="starting">
+                                            Starting in:
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <div id="countdown-clock" class="countdown">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="countdown-item" id="days-item">
+                                                            <div class="flip">
+                                                                <div class="flip-front">
+                                                                    <span class="countdown-value" id="days"></span>
+                                                                    <span class="countdown-label"> days</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <div class="countdown-item" id="hours-item">
+                                                            <div class="flip">
+                                                                <div class="flip-front">
+                                                                    <span class="countdown-value" id="hours"></span>
+                                                                    <span class="countdown-label"> hours</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <div class="countdown-item" id="minutes-item">
+                                                            <div class="flip">
+                                                                <div class="flip-front">
+                                                                    <span class="countdown-value" id="minutes"></span>
+                                                                    <span class="countdown-label"> minutes</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <div class="countdown-item" id="seconds-item">
+                                                            <div class="flip">
+                                                                <div class="flip-front">
+                                                                    <span class="countdown-value" id="seconds"></span>
+                                                                    <span class="countdown-label"> seconds</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div id="finished-ongoing">
+                                The contest is <%= contest.status%>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+        <section id="rules-regulations">
+            <div class="row custom-row-contest">
+                <div class="col" id="name-time">
+                    <h3>Contest Description</h3>
+                    <p>Join Ngaze's 'Math Contest: Second Run'. Exclusively crafted for Grade 11 and 12 students.</p>
+                    <h3>Topics</h3>
+                    <h3>Time and Duration</h3>
+                    <p>Contest will start sharp at <%= contest.startTime.toDateString() %>
+                            <% const timeFormatter=new Intl.DateTimeFormat('en-US', { hour: 'numeric' ,
+                                minute: 'numeric' , hour12: true, timeZone: 'Asia/Dhaka' , // Set the desired time zone
+                                }); const formattedTime=timeFormatter.format(contest.startTime);%>,
+                                <%= `${formattedTime} (Dhaka Time)`%>.
+                                    Contest duration is
+                                    <%const timeDifferenceMinutes=Math.abs((contest.endTime - contest.startTime) / (1000
+                                        * 60));%>
+                                        <%= `${timeDifferenceMinutes} minutes.`%>.</p>
+                </div>
+            </div>
+
+            <div class="row custom-row-contest">
+                <div class="col" id="name-time">
+                    <h3>Contest Rules</h3>
+                    <p>
+                        Participants will be given 60 minutes to solve 7 open-ended physics problems. As soon as an
+                        answer is submitted, you will receive immediate feedback. Correct answers will get you closer to
+                        victory, but beware! Incorrect submissions come with a penalty, making precision and careful
+                        thinking key to success in this contest.
+
+                        Remember, this challenge isn't just about getting the right answers, it's about the journey of
+                        discovery and learning. So, put on your thinking cap, strategize wisely, and embark on this
+                        exciting journey of problem-solving. Good luck!</p>
+                </div>
+            </div>
+
+            <div class="row custom-row-contest">
+                <div class="col" id="name-time">
+                    <h3>Sample contests</h3>
+                    <p>Feel free to take a look at our previously held contests. It will give you an idea about the
+                        contest environment, the question patterns, scoring, etc.</p>
+                    <button class="btn btn-primary">View Previous Contest</button>
+                    <h3>Practice Problems</h3>
+                    <p>We encourage you to go through our practice library. It is well curated to prepare you to do well
+                        in the contests. Best wishes, champ!</p>
+                    <button class="btn btn-primary">Problems</button>
+                </div>
+            </div>
+        </section>
+
+
+        <script>
+
+            const contestStartTime = new Date("<%= contest.startTime %>");
+            const contestStatus = "<%= contest.status%>";
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeRemaining = contestStartTime - now;
+                const countdownContainer = document.getElementById("countdown-clock");
+                const imageContainer = document.getElementById("image-container");
+                const started = document.getElementById("finished-ongoing");
+                const inviteButton = document.getElementById("button-invite");
+                const registerButton = document.getElementById("button-register");
+
+                if (timeRemaining <= 0) {
+                    countdownContainer.style.display = "none";
+                    imageContainer.style.display = "block";
+                    started.style.display = "block";
+                    if(contestStatus === "Finished"){
+                        inviteButton.style.display = "none";
+                    }
+                    else{
+                        inviteButton.style.display = "block";
+                    }
+                    //inviteButton.style.display = "none";
+                    // document.getElementById("countdown-clock").innerHTML = "Contest has started or ended.";
+                } else {
+                    countdownContainer.style.display = "block";
+                    started.style.display = "none";
+                    imageContainer.style.display = "block";
+                    inviteButton.style.display = "block";
+                    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                    updateFlip("days", days);
+                    updateFlip("hours", hours);
+                    updateFlip("minutes", minutes);
+                    updateFlip("seconds", seconds);
+                }
             }
-        }
 
-        function updateFlip(elementId, value) {
-            const element = document.getElementById(elementId);
-            const newElement = document.getElementById(`new-${elementId}`);
-
-            if (element && newElement) {
-                newElement.textContent = value;
-                // element.style.transform = "rotateY(180deg)";
-                // newElement.style.transform = "rotateY(0deg)";
-                setTimeout(() => {
+            function updateFlip(elementId, value) {
+                const element = document.getElementById(elementId);
+                if (element) {
                     element.textContent = value;
-                    element.style.transform = "rotateY(0deg)";
-                    newElement.style.transform = "rotateY(180deg)";
-                }, 500);
+
+                }
             }
-        }
+            // Update the countdown every second
+            setInterval(updateCountdown, 1000);
 
-        // Update the countdown every second
-        setInterval(updateCountdown, 1000);
-
-        // Initial update
-        updateCountdown();
-    </script>
+            // Initial update
+            updateCountdown();
+        </script>
         <%- include("footer") -%>
