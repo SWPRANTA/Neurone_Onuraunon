@@ -61,7 +61,8 @@ const contestSchema = new mongoose.Schema({
   endTime: { type: Date, required: true },
   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true }],
   createdAt: { type: Date, required: true },
-  publish: { type: Boolean, required: true }
+  publish: { type: Boolean, required: true },
+  registered: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 // Define a virtual field to determine contest status

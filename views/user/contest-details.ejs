@@ -17,102 +17,143 @@
                         <div class="overlay-container">
                             <div class="row">
                                 <div class="col-2">
-                                    <button class="btn overlay-button button-register" id="button-register">
-                                        <% if (contest.status === "Upcoming" || "Ongoing") { %>
-                                            Register <i class="fa-solid fa-arrow-right-to-bracket"
-                                            style="color: #ffffff;"></i>
-                                          <% } else if (contest.status === "Finished") { %>
-                                            Leaderboard
-                                          <% } %>
-                                        </button>
-                                    <button class="btn overlay-button button-invite" id="button-invite">Invite <i
-                                            class="fa-solid fa-paper-plane" style="color: #ffffff;"></i></button>
+                                    <form action="/compete/<%= contest._id %>" method="POST"
+                                        onsubmit="return handleRegistration()">
+
+                                        <% if(!userIsRegistered && contest.status=="Upcoming" ) {%>
+                                            <button type="submit" class="btn overlay-button button-register"
+                                                id="button-register">Register<i
+                                                    class="fa-solid fa-arrow-right-to-bracket"
+                                                    style="color: #ffffff;"></i></button>
+                                            <% } else if(!userIsRegistered && contest.status=="Running" ) {%>
+                                                <button type="submit" class="btn overlay-button button-register"
+                                                    id="button-register">
+                                                    Register <i class="fa-solid fa-arrow-right-to-bracket"
+                                                        style="color: #ffffff;"></i>
+                                                </button>
+                                                <% } else if (userIsRegistered && contest.status==="Upcoming" ) { %>
+                                                    <button disabled type="submit"
+                                                        class="btn overlay-button button-register" id="button-register">
+                                                        Join <i class="fa-solid fa-arrow-right-to-bracket"
+                                                            style="color: #ffffff;"></i>
+                                                    </button>
+                                                    <% } else if (userIsRegistered && contest.status==="Running" ) { %>
+                                                        <button type="submit" class="btn overlay-button button-register"
+                                                            id="button-register">
+                                                            Join <i class="fa-solid fa-arrow-right-to-bracket"
+                                                                style="color: #ffffff;"></i>
+                                                        </button>
+                                                        <% } else if (contest.status==="Finished" ) { %>
+                                                            <button type="submit"
+                                                                class="btn overlay-button button-register"
+                                                                id="button-register">
+                                                                Leaderboard <i
+                                                                    class="fa-solid fa-arrow-right-to-bracket"
+                                                                    style="color: #ffffff;"></i>
+                                                            </button>
+                                                            <% } %>
+
+                                                                <button type="submit"
+                                                                    class="btn overlay-button button-invite"
+                                                                    id="button-invite">Invite <i
+                                                                        class="fa-solid fa-paper-plane"
+                                                                        style="color: #ffffff;"></i></button>
+                                    </form>
                                 </div>
 
-                                <div class="col-5">
-                                    <div class="title-subtitle">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h2>
-                                                    <%= contest.title %>
-                                                </h2>
+                                <div class="col-5 mt-3">
+                                    <div class="title-container">
+
+
+                                        <div class="title-subtitle">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h4>
+                                                        <%= contest.title %>
+                                                    </h4>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <h3>
-                                                    <%= contest.subtitle %>
-                                                </h3>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h5>
+                                                        <%= contest.subtitle %>
+                                                    </h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+
                                 <div class="col-5">
-                                    <div class="row">
-                                        <div class="col" id="starting">
-                                            Starting in:
+                                    <% if (contest.status==="Upcoming" ) { %>
+                                        <div class="row">
+                                            <div class="col" id="starting">
+                                                Starting in:
+                                            </div>
                                         </div>
-                                    </div>
+                                        <% } %>
 
 
-                                    <div class="row">
-                                        <div class="col">
-                                            <div id="countdown-clock" class="countdown">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="countdown-item" id="days-item">
-                                                            <div class="flip">
-                                                                <div class="flip-front">
-                                                                    <span class="countdown-value" id="days"></span>
-                                                                    <span class="countdown-label"> days</span>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div id="countdown-clock" class="countdown">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="countdown-item" id="days-item">
+                                                                    <div class="flip">
+                                                                        <div class="flip-front">
+                                                                            <span class="countdown-value"
+                                                                                id="days"></span>
+                                                                            <span class="countdown-label"> days</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col">
-                                                        <div class="countdown-item" id="hours-item">
-                                                            <div class="flip">
-                                                                <div class="flip-front">
-                                                                    <span class="countdown-value" id="hours"></span>
-                                                                    <span class="countdown-label"> hours</span>
+                                                            <div class="col">
+                                                                <div class="countdown-item" id="hours-item">
+                                                                    <div class="flip">
+                                                                        <div class="flip-front">
+                                                                            <span class="countdown-value"
+                                                                                id="hours"></span>
+                                                                            <span class="countdown-label"> hours</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col">
-                                                        <div class="countdown-item" id="minutes-item">
-                                                            <div class="flip">
-                                                                <div class="flip-front">
-                                                                    <span class="countdown-value" id="minutes"></span>
-                                                                    <span class="countdown-label"> minutes</span>
+                                                            <div class="col">
+                                                                <div class="countdown-item" id="minutes-item">
+                                                                    <div class="flip">
+                                                                        <div class="flip-front">
+                                                                            <span class="countdown-value"
+                                                                                id="minutes"></span>
+                                                                            <span class="countdown-label">
+                                                                                minutes</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col">
-                                                        <div class="countdown-item" id="seconds-item">
-                                                            <div class="flip">
-                                                                <div class="flip-front">
-                                                                    <span class="countdown-value" id="seconds"></span>
-                                                                    <span class="countdown-label"> seconds</span>
+                                                            <div class="col">
+                                                                <div class="countdown-item" id="seconds-item">
+                                                                    <div class="flip">
+                                                                        <div class="flip-front">
+                                                                            <span class="countdown-value"
+                                                                                id="seconds"></span>
+                                                                            <span class="countdown-label">
+                                                                                seconds</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
-
-
-
                             <div id="finished-ongoing">
                                 The contest is <%= contest.status%>
                             </div>
@@ -120,11 +161,7 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
-
-
         </section>
 
         <section id="rules-regulations">
@@ -175,11 +212,24 @@
             </div>
         </section>
 
+        <!-- Pop-up message element -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup" onclick="closePopup()">&times;</span>
+                <div id="popup-message"></div>
+            </div>
+        </div>
 
         <script>
 
             const contestStartTime = new Date("<%= contest.startTime %>");
             const contestStatus = "<%= contest.status%>";
+            function refreshPageAfterPopup() {
+                setTimeout(function () {
+                    location.reload(); // Reload the page after a delay
+                }, 5000); // 5000 milliseconds (5 seconds) delay before refreshing
+            }
+
 
             function updateCountdown() {
                 const now = new Date();
@@ -194,10 +244,10 @@
                     countdownContainer.style.display = "none";
                     imageContainer.style.display = "block";
                     started.style.display = "block";
-                    if(contestStatus === "Finished"){
+                    if (contestStatus === "Finished") {
                         inviteButton.style.display = "none";
                     }
-                    else{
+                    else {
                         inviteButton.style.display = "block";
                     }
                     //inviteButton.style.display = "none";
@@ -228,8 +278,52 @@
             }
             // Update the countdown every second
             setInterval(updateCountdown, 1000);
-
             // Initial update
             updateCountdown();
+
+            // Function to open the pop-up and display the message
+            function openPopup(message) {
+                const popup = document.getElementById("popup");
+                const popupMessage = document.getElementById("popup-message");
+                popupMessage.textContent = message;
+                popup.style.display = "block";
+            }
+
+            // Function to close the pop-up
+            function closePopup() {
+                const popup = document.getElementById("popup");
+                popup.style.display = "none";
+
+                refreshPageAfterPopup();
+            }
+            // Function to handle form submission and display the pop-up message
+            function handleRegistration() {
+                const form = document.querySelector("form");
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.result === "registered_upcoming") {
+                            openPopup(data.message);
+
+                        }
+                        else if (data.result === "registered_ongoing") {
+                            const contestID = "<%=contest._id%>";
+                            window.location.href = `/compete/${contestID}`;
+                            console.log(contestID);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error submitting answer:", error);
+                        openPopup("An error occurred while checking the answer.", error);
+                    });
+
+                return false; // Prevent the form from submitting in the traditional way
+            }
+
         </script>
         <%- include("footer") -%>

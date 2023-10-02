@@ -34,9 +34,6 @@ function isAuthenticated(req, res, next) {
         res.redirect("/login");
     }
 }
-
-
-
 router.get("/", function (req, res) {
     res.render('user/landing.ejs');
 });
@@ -388,7 +385,7 @@ router.post("/admin-notification/:id", isAuthenticated, async (req, res) => {
 //Problem section
 router.get("/problems", isAuthenticated, async (req, res) => {
     const isAdmin = req.session.user && req.session.user.role === "admin";
-   
+
     try {
         const users = await User.find().sort({ totalPoints: -1 });
         const page = req.query.page || 1;
@@ -430,11 +427,6 @@ router.get("/problems/:id", isAuthenticated, async (req, res) => {
     }
 });
 
-router.get("/problemDetail", isAuthenticated, (req, res) => {
-    const isAdmin = req.session.user && req.session.user.role === "admin";
-    res.render("user/problemDetail", { isAdmin });
-});
-
 router.post("/check-answer/:id", isAuthenticated, async (req, res) => {
     const problemId = req.params.id;
     const userAnswer = req.body.userAnswer;
@@ -443,13 +435,13 @@ router.post("/check-answer/:id", isAuthenticated, async (req, res) => {
 
     try {
         const problem = await Problem.findById(problemId);
-        const user = await User.findOne({email: sessionuser.email});
+        const user = await User.findOne({ email: sessionuser.email });
         if (problem) {
             const correctAnswer = problem.solution;
             if (userAnswer === correctAnswer) {
                 user.problemsSolved = user.problemsSolved + 1;
                 user.totalPoints = user.totalPoints + problem.points;
-                
+
                 res.json({ result: "correct", message: "Correct answer! Well done!" });
             } else {
 
@@ -783,7 +775,7 @@ router.get("/modify-contest/contests/preview-contest/:id", isAuthenticated, asyn
     }
 });
 
-//Contest Section
+//Contest Section for user
 router.get("/contests", isAuthenticated, async (req, res) => {
     const isAdmin = req.session.user && req.session.user.role === "admin";
     try {
@@ -798,15 +790,153 @@ router.get("/contests", isAuthenticated, async (req, res) => {
 router.get("/contests/contest-details/:contestId", async (req, res) => {
     const contestId = req.params.contestId;
     const isAdmin = req.session.user && req.session.user.role === "admin";
+    const user = req.session.user;
     try {
         const contest = await Contest.findById(contestId);
+        let userIsRegistered = false;
+        if (!contest) {
+            return res.status(404).send("Contest not found");
+        }
+
+        if (contest.registered.includes(user._id)) {
+            userIsRegistered = true;
+        }
+
+        res.render("user/contest-details", { contest, userIsRegistered, isAdmin });
+    } catch (error) {
+        console.error("Error fetching contest details:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+router.get("/compete/:id", isAuthenticated, async (req, res) => {
+    const contestID = req.params.id;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+    const sessionuser = req.session.user;
+    try {
+        const contest = await Contest.findById(contestID).populate('questions');
+        const user = await User.findOne({ email: sessionuser.email });
 
         if (!contest) {
             return res.status(404).send("Contest not found");
         }
-        res.render("user/contest-details", { contest, isAdmin });
+        res.render("user/compete", { contest, isAdmin });
     } catch (error) {
-        console.error("Error fetching contest details:", error);
+        console.error("Error fetching contest data:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+router.post("/compete/:id", isAuthenticated, async (req, res) => {
+    const contestID = req.params.id;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+    const sessionuser = req.session.user;
+
+    try {
+        const contest = await Contest.findById(contestID).populate('questions');
+        const user = await User.findOne({ email: sessionuser.email });
+
+        if (contest) {
+            const contest_status = contest.status;
+            contest.registered.push(user._id)
+            user.contestsJoined += 1;
+            if (contest_status === "Upcoming") {
+                res.json({ result: "registered_upcoming", message: "Congrates! You have been successfully registered. See you in the contest." });
+            }
+            else {
+                res.json({ result: "registered_ongoing", message: "This is a message" })
+            }
+            await user.save();
+            await contest.save();
+        } else {
+            res.status(404).send("Contest not found");
+        }
+    } catch (error) {
+        console.error("Error registering in contest:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+//Contest Problem Section 
+router.get("/compete/problems/:contestId/:questionId", isAuthenticated, async (req, res) => {
+    const contestId = req.params.contestId;
+    const questionId = req.params.questionId;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+
+    try {
+        // Fetch the contest and question details using contestId and questionId
+        const contest = await Contest.findById(contestId);
+        const problem = await Problem.findById(questionId);
+
+        if (contest && problem) {
+            res.render("user/contestProblemDetail", { contest, problem, isAdmin });
+        } else {
+            res.status(404).send("Contest or Problem not found");
+        }
+    } catch (error) {
+        console.error("Error fetching problem details inside compete/problems:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+router.get("/compete/problems/prev/:contestId/:problemId", isAuthenticated, async (req, res) => {
+    const { contestId, problemId } = req.params;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+
+    try {
+        // Find the contest by ID and the current problem
+        const contest = await Contest.findById(contestId);
+        const currentIndex = contest.questions.findIndex(question => question._id.toString() === problemId);
+
+
+        if (currentIndex !== -1) {
+            let previousIndex = currentIndex - 1;
+
+            if (previousIndex < 0) {
+                // If we're on the first problem, loop to the last problem
+                previousIndex = contest.questions.length - 1;
+            }
+
+            // Fetch the previous problem
+            const prevProblemId = contest.questions[previousIndex];
+            const prevProblem = await Problem.findById(prevProblemId);
+            res.render("user/contestProblemDetail", { contest, problem: prevProblem, isAdmin });
+        } else {
+            // Handle the case where there is no next problem or an error occurred
+            res.status(404).send("No previous problem found or an error occurred");
+        }
+    } catch (error) {
+        console.error("Error fetching previous problem:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+router.get("/compete/problems/next/:contestId/:problemId", isAuthenticated, async (req, res) => {
+    const { contestId, problemId } = req.params;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+
+    try {
+        // Find the contest by ID and the current problem
+        const contest = await Contest.findById(contestId);
+        const currentIndex = contest.questions.findIndex(question => question._id.toString() === problemId);
+
+
+        if (currentIndex !== -1) {
+            let nextIndex = currentIndex + 1;
+
+            if (nextIndex >= contest.questions.length) {
+                // If we're on the last problem, loop to the first problem
+                nextIndex = 0;
+            }
+
+            // Fetch the next problem
+            const nextProblemId = contest.questions[nextIndex];
+            const nextProblem = await Problem.findById(nextProblemId);
+            res.render("user/contestProblemDetail", { contest, problem: nextProblem, isAdmin });
+        } else {
+            // Handle the case where there is no next problem or an error occurred
+            res.status(404).send("No next problem found or an error occurred");
+        }
+    } catch (error) {
+        console.error("Error fetching next problem:", error);
         res.status(500).send("An error occurred");
     }
 });
@@ -815,75 +945,75 @@ router.get("/contests/contest-details/:contestId", async (req, res) => {
 // Tutorials Section
 router.get("/tutorial", async (req, res) => {
     try {
-      const isAdmin = req.session.user && req.session.user.role === "admin";
-      const apiKey = process.env.youtube_api;
-      const playlistIds = ['PL23jFe15jxQdCeYWn52pD-gd1goyjKwtW', 'PL03IPd8drN_h5Dw_ovgOQcJ8J0m4m4cFC', 'PL03IPd8drN_hs22sX096hMKV6G_QzXjpy', 'PL03IPd8drN_hOOOtCIfvRa51b11BWnGw3', 'PLkxUHWNJNmL_2j7k8Jsu42mCQMvp6mbpg']; // Add more playlist IDs as needed
-      const playlists = [];
+        const isAdmin = req.session.user && req.session.user.role === "admin";
+        const apiKey = process.env.youtube_api;
+        const playlistIds = ['PL23jFe15jxQdCeYWn52pD-gd1goyjKwtW', 'PL03IPd8drN_h5Dw_ovgOQcJ8J0m4m4cFC', 'PL03IPd8drN_hs22sX096hMKV6G_QzXjpy', 'PL03IPd8drN_hOOOtCIfvRa51b11BWnGw3', 'PLkxUHWNJNmL_2j7k8Jsu42mCQMvp6mbpg']; // Add more playlist IDs as needed
+        const playlists = [];
 
-      const fetchPlaylistData = (playlistId) => {
-          const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}`;
-          const request = https.get(url, (response) => {
-              let data = '';
+        const fetchPlaylistData = (playlistId) => {
+            const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${apiKey}`;
+            const request = https.get(url, (response) => {
+                let data = '';
 
-              response.on('data', (chunk) => {
-                  data += chunk;
-              });
+                response.on('data', (chunk) => {
+                    data += chunk;
+                });
 
-              response.on('end', () => {
-                  if (response.statusCode === 200) {
-                      try {
-                          const playlistData = JSON.parse(data);
-                          const videos = playlistData.items.map((item) => ({
-                              title: item.snippet.title,
-                              thumbnail: item.snippet.thumbnails.default.url,
-                              videoId: item.snippet.resourceId.videoId,
-                          }));
-                          playlists.push({
-                              name: playlistData.items[0].snippet.title,
-                              videos,
-                          });
+                response.on('end', () => {
+                    if (response.statusCode === 200) {
+                        try {
+                            const playlistData = JSON.parse(data);
+                            const videos = playlistData.items.map((item) => ({
+                                title: item.snippet.title,
+                                thumbnail: item.snippet.thumbnails.default.url,
+                                videoId: item.snippet.resourceId.videoId,
+                            }));
+                            playlists.push({
+                                name: playlistData.items[0].snippet.title,
+                                videos,
+                            });
 
-                          if (playlists.length === playlistIds.length) {
-                              res.render('user/tutorial', { isAdmin, playlists });
-                          }
-                      } catch (error) {
-                          console.error('Error parsing YouTube API response:', error);
-                          res.status(500).send('Internal Server Error');
-                      }
-                  } else {
-                      console.error(`YouTube API returned an error for playlist ${playlistId}: ${response.statusCode}`);
-                  }
-              });
-          });
+                            if (playlists.length === playlistIds.length) {
+                                res.render('user/tutorial', { isAdmin, playlists });
+                            }
+                        } catch (error) {
+                            console.error('Error parsing YouTube API response:', error);
+                            res.status(500).send('Internal Server Error');
+                        }
+                    } else {
+                        console.error(`YouTube API returned an error for playlist ${playlistId}: ${response.statusCode}`);
+                    }
+                });
+            });
 
-          request.on('error', (error) => {
-              console.error('Error fetching YouTube data:', error);
-              res.status(500).send('Internal Server Error');
-          });
+            request.on('error', (error) => {
+                console.error('Error fetching YouTube data:', error);
+                res.status(500).send('Internal Server Error');
+            });
 
-          request.end();
-      };
+            request.end();
+        };
 
-      for (const playlistId of playlistIds) {
-          fetchPlaylistData(playlistId);
-      }
-  } catch (error) {
-      console.error('Error fetching YouTube data:', error);
-      res.status(500).send('Internal Server Error');
-  }
+        for (const playlistId of playlistIds) {
+            fetchPlaylistData(playlistId);
+        }
+    } catch (error) {
+        console.error('Error fetching YouTube data:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 
 //Leaderboard section
-router.get("/leaderboard", async (req, res)=>{
-    try{
+router.get("/leaderboard", async (req, res) => {
+    try {
         const isAdmin = req.session.user && req.session.user.role === "admin";
         const users = await User.find().sort({ totalPoints: -1 });
-        res.render("user/leaderboard", {isAdmin, users});
-    }catch(error){
+        res.render("user/leaderboard", { isAdmin, users });
+    } catch (error) {
         console.log("Error on rendering leaderboard: ", error);
     }
-    
+
 });
 
 

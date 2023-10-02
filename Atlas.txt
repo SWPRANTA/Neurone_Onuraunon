@@ -1,0 +1,6 @@
+Cluster: neurone-onuraunon
+Pass: EqsU4PgVzCx2CrRX
+User name: SWPRANTA04
+IP adress: 103.121.176.51/32    My IP Address
+
+mongodb+srv://SWPRANTA04:EqsU4PgVzCx2CrRX@neurone-onuraunon.4oqzaaj.mongodb.net/?retryWrites=true&w=majority

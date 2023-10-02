@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Practice Problems</title>
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+        <!-- Problems Section -->
+        <section id="problem-set">
+            <div class="container mt-5">
+                <div id="table-title">
+                    <h1>Math Problems</h1>
+                </div>
+                <hr id="horizontal-rule">
+            </div>
+
+            <div class="row custom-row">
+                <div class="col-md-8 left-column">
+                    <div class="container mt-2">
+                        <table class="table">
+                            <% if (contest.questions.length> 0) { %>
+                                <% contest.questions.forEach((question)=> { %>
+                                    <tr class="link-cell"
+                                        onclick="window.location.href='/compete/problems/<%= contest._id %>/<%= question._id %>';">
+                                        <td>
+                                            <div>
+                                                <%= question.title %>
+                                            </div>
+                                            <div>Points: <%= question.points %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="spacer"></tr>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="2">No Problems Found</td>
+                                            </tr>
+                                            <% } %>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mt-2 ms-auto right-column">
+                    <div class="p-3 mb-3 component">
+                        <h4>Component 2</h4>
+                        <p>This is the second component content.</p>
+                    </div>
+                    <div class="p-2 mb-1 component">
+                        <div class="container mt-2">
+                            <div>
+                                <h1 id="top-chart">Top Chart</h1>
+                            </div>
+                            <hr id="horizontal-rule">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <%- include("footer") -%>
