@@ -1,4 +1,10 @@
 /node_modules
 app.js
+/index_copy.js
+/Atlas.txt
+/index.js
+/problemID.txt
+/event_data.js
+/New Text Document.txt
 *.xlsx
 *.env
