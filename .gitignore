@@ -1,5 +1,4 @@
-node_modules/
-functionalities/firebase.js
-functionalities/database.js
+/node_modules
 app.js
 *.xlsx
+*.env

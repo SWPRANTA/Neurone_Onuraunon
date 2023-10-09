@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon - Event</title>
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+
+        <div class="container mt-4">
+            <nav>
+                <div class="nav nav-tabs mb-5" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-previous-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-previous" type="button" role="tab" aria-controls="nav-previous"
+                        aria-selected="true">Previous</button>
+                    <button class="nav-link" id="nav-upcoming-tab" data-bs-toggle="tab" data-bs-target="#nav-upcoming"
+                        type="button" role="tab" aria-controls="nav-upcoming" aria-selected="false">Upcoming</button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-previous" role="tabpanel"
+                    aria-labelledby="nav-previous-tab" tabindex="0">
+
+                    <table class="table">
+                        <% events.forEach(event=> { %>
+                            <% if (event.status==='Previous' ) { %>
+                                <tr class="link-cell event-item" onclick="window.location.href='/event/<%=event._id%>';">
+                                    <td>
+                                        <div>
+                                            <%= event.eventTitle %>
+                                        </div>
+                                        <div>Start Time: <%= event.startTime.toString() %></div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                            <% } %>
+                        <% }); %>
+                    </table>
+
+                </div>
+                <div class="tab-pane fade" id="nav-upcoming" role="tabpanel" aria-labelledby="nav-upcoming-tab"
+                    tabindex="0">
+                    <table class="table">
+                        <% events.forEach(event=> { %>
+                            <% if (event.status==='Upcoming' ) { %>
+                                <tr class="link-cell event-item" onclick="window.location.href='/event/<%=event._id%>';">
+                                    <td>
+                                        <div>
+                                            <%= event.eventTitle %>
+                                        </div>
+                                        <div>Start Time: <%= event.startTime %></div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                            <% } %>
+                        <% }); %>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <%- include("footer") -%>

@@ -4,59 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neurone Onuraunon - Contest| <%= contest._id %>
+    <title>Neurone Onuraunon - Contest| <%= fest._id %>
     </title>
     <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
 
         <section id="view-contest">
             <div id="image-container">
-                <img src="/image/Rope_pulling.jpg" class="view-contest-img" srcset="">
+                <img src="<%=fest.imageUrl%>" class="view-contest-img" srcset="">
 
                 <div class="row">
                     <div class="col">
                         <div class="overlay-container">
                             <div class="row">
                                 <div class="col-2">
-                                    <form action="/compete/<%= contest._id %>" method="POST"
-                                        onsubmit="return handleRegistration()">
 
-                                        <% if(!userIsRegistered && contest.status=="Upcoming" ) {%>
-                                            <button type="submit" class="btn overlay-button button-register"
-                                                id="button-register">Register<i
-                                                    class="fa-solid fa-arrow-right-to-bracket"
-                                                    style="color: #ffffff;"></i></button>
-                                            <% } else if(!userIsRegistered && contest.status=="Running" ) {%>
-                                                <button type="submit" class="btn overlay-button button-register"
-                                                    id="button-register">
-                                                    Register <i class="fa-solid fa-arrow-right-to-bracket"
-                                                        style="color: #ffffff;"></i>
-                                                </button>
-                                                <% } else if (userIsRegistered && contest.status==="Upcoming" ) { %>
-                                                    <button disabled type="submit"
-                                                        class="btn overlay-button button-register" id="button-register">
-                                                        Join <i class="fa-solid fa-arrow-right-to-bracket"
-                                                            style="color: #ffffff;"></i>
-                                                    </button>
-                                                    <% } else if (userIsRegistered && contest.status==="Running" ) { %>
-                                                        <button type="submit" class="btn overlay-button button-register"
-                                                            id="button-register">
-                                                            Join <i class="fa-solid fa-arrow-right-to-bracket"
-                                                                style="color: #ffffff;"></i>
-                                                        </button>
-                                                        <% } else if (contest.status==="Finished" ) { %>
-                                                            <button type="submit"
-                                                                class="btn overlay-button button-register"
-                                                                id="button-register">
-                                                                Leaderboard
-                                                            </button>
-                                                            <% } %>
 
-                                                                <button type="submit"
-                                                                    class="btn overlay-button button-invite"
-                                                                    id="button-invite">Invite <i
-                                                                        class="fa-solid fa-paper-plane"
-                                                                        style="color: #ffffff;"></i></button>
-                                    </form>
+                                    <button type="submit" class="btn overlay-button button-invite"
+                                        id="button-invite">Invite <i class="fa-solid fa-paper-plane"
+                                            style="color: #ffffff;"></i></button>
+
                                 </div>
 
                                 <div class="col-5 mt-3">
@@ -67,15 +33,15 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h4>
-                                                        <%= contest.title %>
+                                                        <%= fest.festTitle %>
                                                     </h4>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col">
-                                                    <h5>
-                                                        <%= contest.subtitle %>
-                                                    </h5>
+                                                    <h7>
+                                                        <%= fest.location %>
+                                                    </h7>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,7 +50,7 @@
 
 
                                 <div class="col-5">
-                                    <% if (contest.status==="Upcoming" ) { %>
+                                    <% if (fest.status==="Upcoming" ) { %>
                                         <div class="row">
                                             <div class="col" id="starting">
                                                 Starting in:
@@ -153,7 +119,7 @@
                                 </div>
                             </div>
                             <div id="finished-ongoing">
-                                The contest is <%= contest.status%>
+                                The contest is <%= fest.status%>
                             </div>
 
                         </div>
@@ -165,63 +131,26 @@
         <section id="rules-regulations">
             <div class="row custom-row-contest">
                 <div class="col" id="name-time">
-                    <h3>Contest Description</h3>
-                    <p>Join Ngaze's 'Math Contest: Second Run'. Exclusively crafted for Grade 11 and 12 students.</p>
-                    <h3>Topics</h3>
-                    <h3>Time and Duration</h3>
-                    <p>Contest will start sharp at <%= contest.startTime.toDateString() %>
+                    <h3>Fest Description</h3>
+                    <p>
+                        <%= fest.description %>
+                    </p>
+                    <h3>Probable Date</h3>
+                    <p> <%= fest.startTime %>
                             <% const timeFormatter=new Intl.DateTimeFormat('en-US', { hour: 'numeric' ,
                                 minute: 'numeric' , hour12: true, timeZone: 'Asia/Dhaka' , // Set the desired time zone
-                                }); const formattedTime=timeFormatter.format(contest.startTime);%>,
+                                }); const formattedTime=timeFormatter.format(fest.startTime);%>,
                                 <%= `${formattedTime} (Dhaka Time)`%>.
-                                    Contest duration is
-                                    <%const timeDifferenceMinutes=Math.abs((contest.endTime - contest.startTime) / (1000
-                                        * 60));%>
-                                        <%= `${timeDifferenceMinutes} minutes.`%>.</p>
                 </div>
             </div>
 
-            <div class="row custom-row-contest">
-                <div class="col" id="name-time">
-                    <h3>Contest Rules</h3>
-                    <p>
-                        Participants will be given 60 minutes to solve 7 open-ended physics problems. As soon as an
-                        answer is submitted, you will receive immediate feedback. Correct answers will get you closer to
-                        victory, but beware! Incorrect submissions come with a penalty, making precision and careful
-                        thinking key to success in this contest.
-
-                        Remember, this challenge isn't just about getting the right answers, it's about the journey of
-                        discovery and learning. So, put on your thinking cap, strategize wisely, and embark on this
-                        exciting journey of problem-solving. Good luck!</p>
-                </div>
-            </div>
-
-            <div class="row custom-row-contest">
-                <div class="col" id="name-time">
-                    <h3>Sample contests</h3>
-                    <p>Feel free to take a look at our previously held contests. It will give you an idea about the
-                        contest environment, the question patterns, scoring, etc.</p>
-                    <button class="btn btn-primary">View Previous Contest</button>
-                    <h3>Practice Problems</h3>
-                    <p>We encourage you to go through our practice library. It is well curated to prepare you to do well
-                        in the contests. Best wishes, champ!</p>
-                    <button class="btn btn-primary">Problems</button>
-                </div>
-            </div>
         </section>
 
-        <!-- Pop-up message element -->
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <span class="close-popup" onclick="closePopup()">&times;</span>
-                <div id="popup-message"></div>
-            </div>
-        </div>
 
         <script>
 
-            const contestStartTime = new Date("<%= contest.startTime %>");
-            const contestStatus = "<%= contest.status%>";
+            const festStartTime = new Date("<%= fest.startTime %>");
+            const festStatus = "<%= fest.status%>";
             function refreshPageAfterPopup() {
                 setTimeout(function () {
                     location.reload(); // Reload the page after a delay
@@ -231,18 +160,17 @@
 
             function updateCountdown() {
                 const now = new Date();
-                const timeRemaining = contestStartTime - now;
+                const timeRemaining = festStartTime - now;
                 const countdownContainer = document.getElementById("countdown-clock");
                 const imageContainer = document.getElementById("image-container");
                 const started = document.getElementById("finished-ongoing");
                 const inviteButton = document.getElementById("button-invite");
-                const registerButton = document.getElementById("button-register");
 
                 if (timeRemaining <= 0) {
                     countdownContainer.style.display = "none";
                     imageContainer.style.display = "block";
                     started.style.display = "block";
-                    if (contestStatus === "Finished") {
+                    if (festStatus === "Previous") {
                         inviteButton.style.display = "none";
                     }
                     else {
@@ -278,50 +206,6 @@
             setInterval(updateCountdown, 1000);
             // Initial update
             updateCountdown();
-
-            // Function to open the pop-up and display the message
-            function openPopup(message) {
-                const popup = document.getElementById("popup");
-                const popupMessage = document.getElementById("popup-message");
-                popupMessage.textContent = message;
-                popup.style.display = "block";
-            }
-
-            // Function to close the pop-up
-            function closePopup() {
-                const popup = document.getElementById("popup");
-                popup.style.display = "none";
-
-                refreshPageAfterPopup();
-            }
-            // Function to handle form submission and display the pop-up message
-            function handleRegistration() {
-                const form = document.querySelector("form");
-                fetch(form.action, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.result === "registered_upcoming") {
-                            openPopup(data.message);
-
-                        }
-                        else if (data.result === "registered_ongoing") {
-                            const contestID = "<%=contest._id%>";
-                            window.location.href = `/compete/${contestID}`;
-                            console.log(contestID);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error submitting answer:", error);
-                        openPopup("An error occurred while checking the answer.", error);
-                    });
-
-                return false; // Prevent the form from submitting in the traditional way
-            }
 
         </script>
         <%- include("footer") -%>

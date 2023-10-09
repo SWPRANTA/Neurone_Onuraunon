@@ -62,7 +62,12 @@ const contestSchema = new mongoose.Schema({
   questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Problem', required: true }],
   createdAt: { type: Date, required: true },
   publish: { type: Boolean, required: true },
-  registered: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+  //registered: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  contestents: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    attempts: { type: Number, default: 0 },
+    solved: { type: Number, default: 0 }
+  }]
 });
 
 // Define a virtual field to determine contest status
@@ -81,13 +86,65 @@ contestSchema.virtual('status').get(function () {
 contestSchema.set('toObject', { virtuals: true });
 contestSchema.set('toJSON', { virtuals: true });
 
-
 const Contest = mongoose.model("Contest", contestSchema);
+
+//Event Schema
+const eventSchema = new mongoose.Schema({
+  eventTitle: {type: String, required: true,},
+  location: {type: String, required: true},
+  startTime: {type: Date, required: true},
+  endTime: { type: Date, required: true },
+  description: {type: String, required: true,},
+  imageUrl: [{type: String,}],
+});
+
+eventSchema.virtual('status').get(function () {
+  const now = new Date();
+  if (now < this.startTime) {
+    return 'Upcoming';
+  } else if (now >= this.startTime && now <= this.endTime) {
+    return 'Ongoing';
+  } else {
+    return 'Previous';
+  }
+});
+
+eventSchema.set('toObject', { virtuals: true });
+eventSchema.set('toJSON', { virtuals: true });
+
+const Event = mongoose.model("Event", eventSchema);
+
+
+//Fest Schema
+const festSchema = new mongoose.Schema({
+  festTitle: {type: String, required: true,},
+  location: {type: String, required: true},
+  startTime: {type: Date, required: true},
+  description: {type: String, required: true,},
+  imageUrl: [{type: String,}],
+});
+
+festSchema.virtual('status').get(function () {
+  const now = new Date();
+  if (now < this.startTime) {
+    return 'Upcoming';
+  } else {
+    return 'Previous';
+  }
+});
+
+festSchema.set('toObject', { virtuals: true });
+festSchema.set('toJSON', { virtuals: true });
+
+const Fest = mongoose.model("Fest", festSchema);
+
 
 module.exports = {
   Problem,
   User,
   Blog,
   Notification,
-  Contest
+  Contest,
+  Event,
+  Fest
 };

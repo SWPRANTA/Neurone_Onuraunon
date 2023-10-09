@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurone Onuraunon | Event | <%= event.title %>
+    </title>
+    <%- include(isAdmin ? "../admin/admin-header" : "header" ) %>
+
+        <!-- Event Details section-->
+        <section id="eventContent">
+            <div class="row custom-row">
+                <div class="col component mb-4">
+                    <div class="container event-container">
+                        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner event-carousel">
+                                <% event.imageUrl.forEach((image, index) => { %>
+                                    <div class="carousel-item event-item <%= index === 0 ? 'active' : '' %>" data-bs-interval="2000">
+                                        <img src="<%= image %>" class="d-block w-100 event-item-image" alt="...">
+                                    </div>
+                                <% }); %>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        
+                    </div>
+
+                    <div class="container mt-2">
+
+                        <div id="blog-title">
+                            <%= event.eventTitle %>
+                        </div>
+                        <div id="date">
+                            <%= "Start Time: " + event.startTime.toString() %>
+                        </div>
+
+                    </div>
+                    <hr id="horizontal-rule">
+                    <div>
+                        <%= event.description %>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <%- include("footer") -%>

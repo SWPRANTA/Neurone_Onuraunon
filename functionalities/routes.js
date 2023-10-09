@@ -4,7 +4,7 @@ const authMiddleware = require("./authMiddleware");
 const auth = require("./firebase");
 require('dotenv').config();
 const crypto = require("crypto");
-const { Problem, User, Blog, Notification, Contest } = require("./models");
+const { Problem, User, Blog, Notification, Contest, Event, Fest } = require("./models");
 const { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, sendSignInLinkToEmail, signOut, signInWithPopup, GoogleAuthProvider } = require("firebase/auth");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -798,9 +798,10 @@ router.get("/contests/contest-details/:contestId", async (req, res) => {
             return res.status(404).send("Contest not found");
         }
 
-        if (contest.registered.includes(user._id)) {
-            userIsRegistered = true;
-        }
+        
+        // if (contest.contestents.user.includes(user._id)) {
+        //     userIsRegistered = true;
+        // }
 
         res.render("user/contest-details", { contest, userIsRegistered, isAdmin });
     } catch (error) {
@@ -836,7 +837,10 @@ router.post("/compete/:id", isAuthenticated, async (req, res) => {
 
         if (contest) {
             const contest_status = contest.status;
-            contest.registered.push(user._id)
+            //contest.registered.push(user._id);
+            contest.contestents.push({//Do something to restrict from re-registering
+                user: user._id
+            });
             user.contestsJoined += 1;
             if (contest_status === "Upcoming") {
                 res.json({ result: "registered_upcoming", message: "Congrates! You have been successfully registered. See you in the contest." });
@@ -943,7 +947,7 @@ router.get("/compete/problems/next/:contestId/:problemId", isAuthenticated, asyn
 
 
 // Tutorials Section
-router.get("/tutorial", async (req, res) => {
+router.get("/tutorial", isAuthenticated, async (req, res) => {
     try {
         const isAdmin = req.session.user && req.session.user.role === "admin";
         const apiKey = process.env.youtube_api;
@@ -1005,7 +1009,7 @@ router.get("/tutorial", async (req, res) => {
 
 
 //Leaderboard section
-router.get("/leaderboard", async (req, res) => {
+router.get("/leaderboard", isAuthenticated, async (req, res) => {
     try {
         const isAdmin = req.session.user && req.session.user.role === "admin";
         const users = await User.find().sort({ totalPoints: -1 });
@@ -1016,6 +1020,50 @@ router.get("/leaderboard", async (req, res) => {
 
 });
 
+//Event Section
+router.get("/event", isAuthenticated, async (req, res) => {
+    try {
+        const isAdmin = req.session.user && req.session.user.role === "admin";
 
+        // Fetch all events from your MongoDB database
+        const events = await Event.find().exec();
 
+        // Render the 'event' template and pass the 'events' array and 'isAdmin' variable
+        res.render("user/event", { isAdmin, events });
+    } catch (error) {
+        console.log("Error on rendering event: ", error);
+    }
+});
+
+router.get("/event/:id", isAuthenticated, async (req, res) => {
+    const eventId = req.params.id;
+    const isAdmin = req.session.user && req.session.user.role === "admin";
+    try {
+        const event = await Event.findById(eventId);
+        if (event) {
+            res.render("user/eventDetails", { event, isAdmin });
+        } else {
+            res.status(404).send("Event not found");
+        }
+    } catch (error) {
+        console.error("Error fetching event details:", error);
+        res.status(500).send("An error occurred");
+    }
+});
+
+//Fest Section
+router.get("/fest", isAuthenticated, async (req, res) => {
+    try {
+        const isAdmin = req.session.user && req.session.user.role === "admin";
+
+        // Fetch all events from your MongoDB database
+        const fests = await Fest.find();
+        const fest = fests[0];
+
+        // Render the 'event' template and pass the 'events' array and 'isAdmin' variable
+        res.render("user/fest", { isAdmin, fest });
+    } catch (error) {
+        console.log("Error on rendering event: ", error);
+    }
+});
 module.exports = router;

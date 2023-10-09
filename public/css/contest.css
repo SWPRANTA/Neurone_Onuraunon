@@ -204,3 +204,8 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.custom-card {
+    font-family: 'Exo', sans-serif;
+}
+
